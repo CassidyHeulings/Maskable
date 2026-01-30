@@ -23,6 +23,9 @@ int createBackground(VertexArray& va, IntRect world) {
 
     // Start at the beginning of the vertex array
     int currVertex = 0;
+    // TODO randomize for biome
+    // randomize tile type
+    //srand((int)time(nullptr));
     // position each vertex in current quad
     for (int w = 0; w < worldWidth; w++) {
         for (int h = 0; h < worldHeight; h++) {
@@ -48,9 +51,7 @@ int createBackground(VertexArray& va, IntRect world) {
             // TODO change into biomes
             // use floor texture
             else {
-                // randomize tile type
-                //srand((int)time(0) + h * w - h);
-                //int groundType = (rand() % SHEET_WIDTH);
+                //int groundType = rand() % SHEET_WIDTH;
                 // vertical reference point within sprite sheet dependent on type num
                 //int verticalOffset = groundType * TILE_SIZE;
                 int verticalOffset = 1;
