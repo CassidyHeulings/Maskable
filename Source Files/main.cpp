@@ -13,10 +13,10 @@ int main() {
 
     // create SFML window with screen resolution
     Vector2f resolution;
-    resolution.x = VideoMode::getDesktopMode().width;
-    resolution.y = VideoMode::getDesktopMode().height;
-    RenderWindow window(VideoMode(resolution.x, resolution.y),
-        "Maskable", Style::None);
+    resolution.x = VideoMode::getFullscreenModes()[0].width;
+    resolution.y = VideoMode::getFullscreenModes()[0].height;
+    RenderWindow window(VideoMode::getFullscreenModes()[0],
+        "Maskable", Style::Fullscreen);
     // view following character in world
     View mainView(FloatRect(0,0,resolution.x,resolution.y));
 
@@ -140,9 +140,8 @@ int main() {
         /**
         if (state == State::CRAFTING) {
             // check mouse pointer
-            mouseScreenPos = Mouse::getPosition(); // get mouse pos on screen
             mouseWorldPos = window.mapPixelToCoords(
-                Mouse::getPosition(), mainView); // convert to world coords of mainView
+                Mouse::getPosition(window), mainView); // convert to world coords of mainView
         }
         */
 
