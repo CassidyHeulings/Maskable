@@ -46,9 +46,9 @@ int createBackground(VertexArray& va, IntRect world) {
     // set biome locations
     IntRect grassZone = IntRect(1, 1, 9, 7);
     IntRect sandZone = IntRect(10, 1, 9, 7);
-    IntRect waterZone = IntRect(3, 3, 8, 6); // TODO Fix
     IntRect mushroomZone = IntRect(1, 8, 9, 6);
     IntRect stoneZone = IntRect(10, 8, 9, 6);
+    IntRect waterZone = IntRect(13,2,5,3);
 
     // position each vertex in current quad
     for (int w = 0; w < worldWidth; w++) {
@@ -144,66 +144,66 @@ int createBackground(VertexArray& va, IntRect world) {
                 && w >= waterZone.left && w < waterZone.left + waterZone.width) {
                 // top left corner
                 if (h == waterZone.top && w == waterZone.left) {
-                    va[currVertex].texCoords = Vector2f(0, TILE_SIZE);
-                    va[currVertex + 1].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
-                    va[currVertex + 2].texCoords = Vector2f( TILE_SIZE, 2 * TILE_SIZE);
-                    va[currVertex + 3].texCoords = Vector2f(0, 2 * TILE_SIZE);
+                    va[currVertex].texCoords = Vector2f(0, 2 * TILE_SIZE);
+                    va[currVertex + 1].texCoords = Vector2f(TILE_SIZE, 2 * TILE_SIZE);
+                    va[currVertex + 2].texCoords = Vector2f( TILE_SIZE, 3 * TILE_SIZE);
+                    va[currVertex + 3].texCoords = Vector2f(0, 3 * TILE_SIZE);
                 }
                 // top right
-                else if (h == waterZone.top && w == waterZone.width) {
-                    va[currVertex + 1].texCoords = Vector2f(0, TILE_SIZE);
-                    va[currVertex + 2].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
-                    va[currVertex + 3].texCoords = Vector2f( TILE_SIZE,  2 * TILE_SIZE);
-                    va[currVertex + 0].texCoords = Vector2f(0, 2 * TILE_SIZE);
+                else if (h == waterZone.top && w == waterZone.left + waterZone.width - 1) {
+                    va[currVertex + 1].texCoords = Vector2f(0, 2 * TILE_SIZE);
+                    va[currVertex + 2].texCoords = Vector2f(TILE_SIZE, 2 * TILE_SIZE);
+                    va[currVertex + 3].texCoords = Vector2f( TILE_SIZE,  3 * TILE_SIZE);
+                    va[currVertex + 0].texCoords = Vector2f(0, 3 * TILE_SIZE);
                 }
                 // bottom left
-                else if (h == waterZone.height && w == waterZone.left) {
-                    va[currVertex + 3].texCoords = Vector2f(0, TILE_SIZE);
-                    va[currVertex + 0].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
-                    va[currVertex + 1].texCoords = Vector2f( TILE_SIZE, 2 * TILE_SIZE);
-                    va[currVertex + 2].texCoords = Vector2f(0, 2 * TILE_SIZE);
+                else if (h == waterZone.top + waterZone.height - 1 && w == waterZone.left) {
+                    va[currVertex + 3].texCoords = Vector2f(0, 2 * TILE_SIZE);
+                    va[currVertex + 0].texCoords = Vector2f(TILE_SIZE, 2 * TILE_SIZE);
+                    va[currVertex + 1].texCoords = Vector2f( TILE_SIZE, 3 * TILE_SIZE);
+                    va[currVertex + 2].texCoords = Vector2f(0, 3 * TILE_SIZE);
                 }
                 // bottom right
-                else if (h == waterZone.height && w == waterZone.width) {
-                    va[currVertex + 2].texCoords = Vector2f(0, TILE_SIZE);
-                    va[currVertex + 3].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
-                    va[currVertex + 0].texCoords = Vector2f( TILE_SIZE, 2 * TILE_SIZE);
-                    va[currVertex + 1].texCoords = Vector2f(0, 2 * TILE_SIZE);
+                else if (h == waterZone.top + waterZone.height - 1 && w == waterZone.left + waterZone.width - 1) {
+                    va[currVertex + 2].texCoords = Vector2f(0, 2 * TILE_SIZE);
+                    va[currVertex + 3].texCoords = Vector2f(TILE_SIZE, 2 * TILE_SIZE);
+                    va[currVertex + 0].texCoords = Vector2f( TILE_SIZE, 3 * TILE_SIZE);
+                    va[currVertex + 1].texCoords = Vector2f(0, 3 * TILE_SIZE);
                 }
                 // top side
                 else if (h == waterZone.top) {
-                    va[currVertex].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
-                    va[currVertex + 1].texCoords = Vector2f(TILE_SIZE * 2, TILE_SIZE);
-                    va[currVertex + 2].texCoords = Vector2f( TILE_SIZE * 2, 2 * TILE_SIZE);
-                    va[currVertex + 3].texCoords = Vector2f(TILE_SIZE, 2 * TILE_SIZE);
+                    va[currVertex].texCoords = Vector2f(TILE_SIZE, 2 * TILE_SIZE);
+                    va[currVertex + 1].texCoords = Vector2f(TILE_SIZE * 2, 2 * TILE_SIZE);
+                    va[currVertex + 2].texCoords = Vector2f( TILE_SIZE * 2, 3 * TILE_SIZE);
+                    va[currVertex + 3].texCoords = Vector2f(TILE_SIZE, 3 * TILE_SIZE);
                 }
                 // bottom side
-                else if (h == waterZone.height) {
-                    va[currVertex + 2].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
-                    va[currVertex + 3].texCoords = Vector2f(TILE_SIZE * 2, TILE_SIZE);
-                    va[currVertex + 0].texCoords = Vector2f( TILE_SIZE * 2, 2 * TILE_SIZE);
-                    va[currVertex + 1].texCoords = Vector2f(TILE_SIZE, 2 * TILE_SIZE);
+                else if (h == waterZone.top + waterZone.height - 1) {
+                    va[currVertex + 2].texCoords = Vector2f(TILE_SIZE, 2 * TILE_SIZE);
+                    va[currVertex + 3].texCoords = Vector2f(TILE_SIZE * 2, 2 * TILE_SIZE);
+                    va[currVertex + 0].texCoords = Vector2f( TILE_SIZE * 2, 3 * TILE_SIZE);
+                    va[currVertex + 1].texCoords = Vector2f(TILE_SIZE, 3 * TILE_SIZE);
                 }
                 // left side
                 else if (w == waterZone.left) {
-                    va[currVertex + 3].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
-                    va[currVertex + 0].texCoords = Vector2f(TILE_SIZE * 2, TILE_SIZE);
-                    va[currVertex + 1].texCoords = Vector2f( TILE_SIZE * 2, 2 * TILE_SIZE);
-                    va[currVertex + 2].texCoords = Vector2f(TILE_SIZE, 2 * TILE_SIZE);
+                    va[currVertex + 3].texCoords = Vector2f(TILE_SIZE, 2 * TILE_SIZE);
+                    va[currVertex + 0].texCoords = Vector2f(TILE_SIZE * 2, 2 * TILE_SIZE);
+                    va[currVertex + 1].texCoords = Vector2f( TILE_SIZE * 2, 3 * TILE_SIZE);
+                    va[currVertex + 2].texCoords = Vector2f(TILE_SIZE, 3 * TILE_SIZE);
                 }
                 // right side
-                else if (w == waterZone.width) {
-                    va[currVertex + 1].texCoords = Vector2f(TILE_SIZE, TILE_SIZE);
-                    va[currVertex + 2].texCoords = Vector2f(TILE_SIZE * 2, TILE_SIZE);
-                    va[currVertex + 3].texCoords = Vector2f( TILE_SIZE * 2, 2 * TILE_SIZE);
-                    va[currVertex + 0].texCoords = Vector2f(TILE_SIZE, 2 * TILE_SIZE);
+                else if (w == waterZone.left + waterZone.width - 1) {
+                    va[currVertex + 1].texCoords = Vector2f(TILE_SIZE, 2 * TILE_SIZE);
+                    va[currVertex + 2].texCoords = Vector2f(TILE_SIZE * 2, 2 * TILE_SIZE);
+                    va[currVertex + 3].texCoords = Vector2f( TILE_SIZE * 2, 3 * TILE_SIZE);
+                    va[currVertex + 0].texCoords = Vector2f(TILE_SIZE, 3 * TILE_SIZE);
                 }
                 // middle
                 else {
-                    va[currVertex + 0].texCoords = Vector2f(TILE_SIZE * 2, TILE_SIZE);
-                    va[currVertex + 1].texCoords = Vector2f(TILE_SIZE * 3, TILE_SIZE);
-                    va[currVertex + 2].texCoords = Vector2f( TILE_SIZE * 3, 2 * TILE_SIZE);
-                    va[currVertex + 3].texCoords = Vector2f(TILE_SIZE * 2, 2 * TILE_SIZE);
+                    va[currVertex + 0].texCoords = Vector2f(TILE_SIZE * 2, 2 * TILE_SIZE);
+                    va[currVertex + 1].texCoords = Vector2f(TILE_SIZE * 3, 2 * TILE_SIZE);
+                    va[currVertex + 2].texCoords = Vector2f( TILE_SIZE * 3, 3 * TILE_SIZE);
+                    va[currVertex + 3].texCoords = Vector2f(TILE_SIZE * 2, 3 * TILE_SIZE);
                 }
             }
             // use sand texture
