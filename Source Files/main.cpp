@@ -23,6 +23,7 @@ int main() {
         "Maskable", Style::Fullscreen);
     // view following character in world
     View mainView(FloatRect(0,0,resolution.x,resolution.y));
+    Vector2f viewPosition;
 
     // Initialize game-wide variables
     Clock clock; // used to time everything
@@ -134,9 +135,25 @@ int main() {
             player.update(dtAsSeconds);
             Vector2f playerPos(player.getCenter()); // note players new pos
 
-            // TODO if at edge, do not center anymore
+            // set camera view
+            // horizontal
+            if (player.getCenter().x < resolution.x / 2) // player is approaching left side
+                viewPosition.x = resolution.x / 2;
+            else if (player.getCenter().x > world.width - resolution.x / 2) // player is approaching right side
+                viewPosition.x = world.width - resolution.x / 2;
+            else // player is not at boundary
+                viewPosition.x = player.getCenter().x;
+            // vertical
+            if (player.getCenter().y < resolution.y / 2) // player is approaching top
+                viewPosition.y = resolution.y / 2;
+            else if (player.getCenter().y > world.height - resolution.y / 2) // player is approaching bottom
+                viewPosition.y = world.height - resolution.y / 2;
+            else // player is not at boundary
+                viewPosition.y = player.getCenter().y;
+
             // make view centered around player
-            mainView.setCenter(player.getCenter());
+            mainView.setCenter(viewPosition);
+
         } // end update state playing
 
         // TODO mouse coords in menus?
