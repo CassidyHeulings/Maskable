@@ -8,7 +8,7 @@ using namespace sf;
 // editing background in main
 int createBackground(VertexArray& va, IntRect world) {
     // tile info
-    const int TILE_SIZE = 64; // size in pixels
+    const int TILE_SIZE = 256; // size in pixels
     const int SHEET_WIDTH = 4; // different tiles in sprite sheet
     const int VERTS_IN_QUAD = 4;
     // world size in number of tiles

@@ -86,8 +86,8 @@ int main() {
                 }
                 if (state == State::NEW_GAME) {
                     // prepare new game level
-                    world.width = 2304; // 64 * 36
-                    world.height = 1920; // 64 * 30
+                    world.width = 9216; // 256 * 36 (36 tiles)
+                    world.height = 7680; // 256 * 30 (30 tiles)
                     world.left = 0;
                     world.top = 0;
                     // pass vertex array by reference to create the background here
