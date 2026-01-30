@@ -1,10 +1,8 @@
 //
 // Created by Cassidy Heulings on 1/29/26.
 //
-
 #pragma once
 #include <SFML/Graphics.hpp>
-
 
 class Player {
 public:
