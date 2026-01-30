@@ -113,6 +113,8 @@ int main() {
             if (Keyboard::isKeyPressed(Keyboard::S)) player.moveDown();
             if (Keyboard::isKeyPressed(Keyboard::A)) player.moveLeft();
             if (Keyboard::isKeyPressed(Keyboard::D)) player.moveRight();
+            // TODO remove
+            if (Keyboard::isKeyPressed(Keyboard::Escape)) window.close();
         } // end movement while playing
 
         /*

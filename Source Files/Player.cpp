@@ -11,7 +11,7 @@ Player::Player()
       sprite() {
     // associate texture with sprite
     // TODO change file name
-    texture.loadFromFile("../Graphics/player.png");
+    texture.loadFromFile("../Graphics/PlayerFront.png");
     sprite.setTexture(texture);
     // set origin of sprite to center for smooth rotation
     sprite.setOrigin(64,64);

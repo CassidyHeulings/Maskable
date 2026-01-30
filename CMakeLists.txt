@@ -8,6 +8,8 @@ find_package(SFML 2.6 COMPONENTS graphics window system audio REQUIRED)
 
 add_executable(Maskable "Source Files/main.cpp"
         "Source Files/Player.cpp"
-        "Header Files/Player.hpp")
+        "Header Files/Player.hpp"
+        "Source Files/World.cpp"
+        "Header Files/World.hpp")
 
 target_link_libraries(Maskable sfml-graphics sfml-window sfml-system sfml-audio)
