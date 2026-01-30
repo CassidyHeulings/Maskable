@@ -100,13 +100,19 @@ void Player::update(float dt) {
     }
     if (upPressed) {
         position.y -= speed * dt;
-        sprite.setTexture(textureList[1]);
-        lastFacing = 1;
+        // only use up texture when going straight up
+        if (!(leftPressed || rightPressed)) {
+            sprite.setTexture(textureList[1]);
+            lastFacing = 1;
+        }
     }
     if (downPressed) {
         position.y += speed * dt;
-        sprite.setTexture(textureList[0]);
-        lastFacing = 2;
+        // only use down texture when going straight down
+        if (!(leftPressed || rightPressed)) {
+            sprite.setTexture(textureList[0]);
+            lastFacing = 2;
+        }
     }
 
     // TODO adjust with more textures
