@@ -23,9 +23,26 @@ int createBackground(VertexArray& va, IntRect world) {
 
     // Start at the beginning of the vertex array
     int currVertex = 0;
-    // TODO randomize for biome
-    // randomize tile type
-    //srand((int)time(nullptr));
+    srand((int)time(nullptr));
+
+    // TODO change into biomes
+    // make sure the following calculations are in terms of tiles:
+
+    // while we are at 5 tiles less than width/height
+    // generate random number for biome type
+    // generate random number for height and width of biome
+    // store in int rect the coords of the biome for setting textures
+    // *this int rect should be a var with a getter in class so game can access where to place interactive sprites
+    // on final 5 biomes, check that each biome was used at least once
+    // if not, generate that biome then continue
+
+    // divide int rect into tiles
+    // set border tiles the same way we did with wall
+    // set all in between tiles
+    // ensure we are transforming tiles as necessary (reversed or upside down if allowed)
+
+    int tileType = rand() % (SHEET_WIDTH + 1);
+
     // position each vertex in current quad
     for (int w = 0; w < worldWidth; w++) {
         for (int h = 0; h < worldHeight; h++) {
@@ -48,10 +65,8 @@ int createBackground(VertexArray& va, IntRect world) {
                 va[currVertex + 2].texCoords = Vector2f( SHEET_WIDTH * TILE_SIZE, (SHEET_WIDTH - 1) * TILE_SIZE);
                 va[currVertex + 3].texCoords = Vector2f((SHEET_WIDTH - 1) * TILE_SIZE, (SHEET_WIDTH - 1) * TILE_SIZE);
             }
-            // TODO change into biomes
             // use floor texture
             else {
-                //int groundType = rand() % SHEET_WIDTH;
                 // vertical reference point within sprite sheet dependent on type num
                 //int verticalOffset = groundType * TILE_SIZE;
                 int verticalOffset = 3 * TILE_SIZE;
