@@ -86,8 +86,8 @@ int main() {
                 }
                 if (state == State::NEW_GAME) {
                     // prepare new game level
-                    world.width = 9216; // 256 * 36 (36 tiles)
-                    world.height = 7680; // 256 * 30 (30 tiles)
+                    world.width = 4608; // 128 * 36 (36 tiles)
+                    world.height = 3840; // 128 * 30 (30 tiles)
                     world.left = 0;
                     world.top = 0;
                     // pass vertex array by reference to create the background here
@@ -106,15 +106,15 @@ int main() {
                     }
                 }
             } // end key pressed
-        } // end event polling
 
-        // real-time key presses (movement)
-        if (state == State::PLAYING) {
-            if (Keyboard::isKeyPressed(Keyboard::W)) player.moveUp();
-            if (Keyboard::isKeyPressed(Keyboard::S)) player.moveDown();
-            if (Keyboard::isKeyPressed(Keyboard::A)) player.moveLeft();
-            if (Keyboard::isKeyPressed(Keyboard::D)) player.moveRight();
-        } // end movement while playing
+            // real-time key presses (movement)
+            if (state == State::PLAYING) {
+                if (Keyboard::isKeyPressed(Keyboard::W)) player.moveUp(); else player.stopUp();
+                if (Keyboard::isKeyPressed(Keyboard::S)) player.moveDown(); else player.stopDown();
+                if (Keyboard::isKeyPressed(Keyboard::A)) player.moveLeft(); else player.stopLeft();
+                if (Keyboard::isKeyPressed(Keyboard::D)) player.moveRight(); else player.stopRight();
+            } // end movement while playing
+        } // end event polling
 
         /*
         ****************

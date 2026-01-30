@@ -13,8 +13,8 @@ Player::Player()
     // TODO change file name
     texture.loadFromFile("../Graphics/PlayerFront.png");
     sprite.setTexture(texture);
-    // set origin of sprite to center for smooth rotation
-    sprite.setOrigin(64,64);
+    // set origin of sprite to center
+    sprite.setOrigin(35,74);
 }
 // spawns player
 void Player::spawn(IntRect worldSize, Vector2f res, int sizeTile) {
@@ -104,8 +104,12 @@ void Player::update(float dt) {
     sprite.setPosition(position.x, position.y);
     // keep player in world bounds
     // each size has a wall with dimensions of 1x1 tile size
-    if (position.x > world.width - tileSize) position.x = world.width - tileSize;
-    if (position.x < world.left + tileSize) position.x = world.left + tileSize;
-    if (position.y > world.height - tileSize) position.y = world.height - tileSize;
+    // TODO adjust for side profiles
+    // stop player from walking past wall
+    if (position.x > world.width - tileSize - 35) position.x = world.width - tileSize - 35;
+    if (position.x < world.left + tileSize + 35) position.x = world.left + tileSize + 35;
+    // stop player from walking on wall
+    if (position.y > world.height - tileSize - 74) position.y = world.height - tileSize - 74;
+    // allow player to walk up to wall
     if (position.y < world.top + tileSize) position.y = world.top + tileSize;
 }

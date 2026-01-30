@@ -8,8 +8,8 @@ using namespace sf;
 // editing background in main
 int createBackground(VertexArray& va, IntRect world) {
     // tile info
-    const int TILE_SIZE = 256; // size in pixels
-    const int SHEET_WIDTH = 4; // different tiles in sprite sheet
+    const int TILE_SIZE = 128; // size in pixels
+    const int SHEET_WIDTH = 4; // width of sheet in tiles
     const int VERTS_IN_QUAD = 4;
     // world size in number of tiles
     int worldWidth = world.width / TILE_SIZE;
@@ -54,7 +54,7 @@ int createBackground(VertexArray& va, IntRect world) {
                 //int groundType = rand() % SHEET_WIDTH;
                 // vertical reference point within sprite sheet dependent on type num
                 //int verticalOffset = groundType * TILE_SIZE;
-                int verticalOffset = 1;
+                int verticalOffset = 3 * TILE_SIZE;
                 // assign texture coords to vertices
                 va[currVertex].texCoords = Vector2f(0, verticalOffset);
                 va[currVertex + 1].texCoords = Vector2f(TILE_SIZE, verticalOffset);

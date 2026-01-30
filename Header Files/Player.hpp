@@ -27,7 +27,7 @@ public:
     void update(float dt);
     // TODO mask effects
 private:
-    const float START_SPEED = 200;
+    const float START_SPEED = 300;
     sf::Vector2f position; // players current position
     sf::Sprite sprite; // sprite
     sf::Texture texture; // players texture
