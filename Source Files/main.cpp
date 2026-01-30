@@ -4,10 +4,13 @@
 #include <SFMl/Graphics.hpp>
 #include "../Header Files/Player.hpp"
 #include "../Header Files/World.hpp"
+#include "../Header Files/TextureHolder.hpp"
 using namespace sf;
 
 int main() {
     // initializing screen/world vars
+    // add instance of texture holder
+    TextureHolder holder;
     // TODO decide game states
     enum class State { PAUSED, CRAFTING, NEW_GAME, PLAYING, JOURNAL };
     State state = State::PAUSED; // start game in paused state
@@ -28,8 +31,7 @@ int main() {
     Player player; // create instance of player class
     IntRect world; // boundaries of world
     VertexArray background; // create background
-    Texture backgroundTexture; // load texture for background
-    backgroundTexture.loadFromFile("../Graphics/BackgroundSheet.png");
+    Texture backgroundTexture = TextureHolder::GetTexture("../Graphics/BackgroundSheet.png"); // load texture for background
 
     // game loop
     while (window.isOpen()) {

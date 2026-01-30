@@ -2,19 +2,18 @@
 // Created by Cassidy Heulings on 1/29/26.
 //
 #include "../Header Files/Player.hpp"
+#include "../Header Files/TextureHolder.hpp"
 using namespace sf;
 
 // constructor
 Player::Player()
     : speed(START_SPEED) {
     // TODO keep adding
-    // add all files into texture list
-    texture.loadFromFile("../Graphics/PlayerFront.png");
-    textureList.push_back(texture);
-    texture.loadFromFile("../Graphics/PlayerBack.png");
-    textureList.push_back(texture);
+    // add all file names into texture list
+    textureList.emplace_back("../Graphics/PlayerFront.png");
+    textureList.emplace_back("../Graphics/PlayerBack.png");
     // associate texture with sprite
-    sprite.setTexture(textureList[0]);
+    sprite = Sprite(TextureHolder::GetTexture(textureList[0]));
     // set origin of sprite to center
     sprite.setOrigin(35,74);
 }
@@ -90,19 +89,19 @@ void Player::update(float dt) {
     // TODO set running textures and find better way to not set texture every 2 seconds
     if (leftPressed) {
         position.x -= speed * dt;
-        sprite.setTexture(textureList[0]);
+        sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
         lastFacing = -1;
     }
     if (rightPressed) {
         position.x += speed * dt;
-        sprite.setTexture(textureList[0]);
+        sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
         lastFacing = -2;
     }
     if (upPressed) {
         position.y -= speed * dt;
         // only use up texture when going straight up
         if (!(leftPressed || rightPressed)) {
-            sprite.setTexture(textureList[1]);
+            sprite.setTexture(TextureHolder::GetTexture(textureList[1]));
             lastFacing = 1;
         }
     }
@@ -110,22 +109,22 @@ void Player::update(float dt) {
         position.y += speed * dt;
         // only use down texture when going straight down
         if (!(leftPressed || rightPressed)) {
-            sprite.setTexture(textureList[0]);
+            sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
             lastFacing = 2;
         }
     }
 
     // TODO adjust with more textures
     // if player is stopped, fix texture
-    if (!(leftPressed & rightPressed & upPressed & downPressed)) {
+    if (!(leftPressed && rightPressed && upPressed && downPressed)) {
         // facing left
-        if (lastFacing == -1) sprite.setTexture(textureList[0]);
+        if (lastFacing == -1) sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
         // facing right
-        else if (lastFacing == -2) sprite.setTexture(textureList[0]);
+        else if (lastFacing == -2) sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
         // facing up
-        else if (lastFacing == 1) sprite.setTexture(textureList[1]);
+        else if (lastFacing == 1) sprite.setTexture(TextureHolder::GetTexture(textureList[1]));
         // facing down
-        else if (lastFacing == 2) sprite.setTexture(textureList[0]);
+        else if (lastFacing == 2) sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
 
     }
 

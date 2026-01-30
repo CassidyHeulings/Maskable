@@ -31,7 +31,7 @@ private:
     sf::Vector2f position; // players current position
     sf::Sprite sprite; // sprite
     sf::Texture texture; // current texture
-    std::vector<sf::Texture> textureList; // all the textures
+    std::vector<std::string> textureList; // all the texture names
     sf::Vector2f resolution; // screen resolution
     sf::IntRect world; // size of world
     int tileSize; // size of tiles in world
