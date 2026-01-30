@@ -24,7 +24,7 @@ public:
     void stopUp();
     void stopDown();
     // player update - called once per frame
-    void update(float dt, sf::Vector2i mousePos);
+    void update(float dt);
     // TODO mask effects
 private:
     const float START_SPEED = 200;

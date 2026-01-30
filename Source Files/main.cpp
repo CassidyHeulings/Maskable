@@ -9,14 +9,14 @@ int main() {
     // initializing screen/world vars
     // TODO decide game states
     enum class State { PAUSED, CRAFTING, NEW_GAME, PLAYING, JOURNAL };
-    State state = State::NEW_GAME; // start game in game over state
+    State state = State::PLAYING; // start game in game over state
 
     // create SFML window with screen resolution
     Vector2f resolution;
     resolution.x = VideoMode::getDesktopMode().width;
     resolution.y = VideoMode::getDesktopMode().height;
     RenderWindow window(VideoMode(resolution.x, resolution.y),
-        "Maskable", Style::Fullscreen);
+        "Maskable", Style::None);
     // view following character in world
     View mainView(FloatRect(0,0,resolution.x,resolution.y));
 
@@ -32,7 +32,7 @@ int main() {
 
         /*
          *************
-         Handle input
+         HANDLE INPUT
          *************
          */
 
@@ -114,7 +114,65 @@ int main() {
             if (Keyboard::isKeyPressed(Keyboard::A)) player.moveLeft();
             if (Keyboard::isKeyPressed(Keyboard::D)) player.moveRight();
         } // end movement while playing
-    }
+
+        /*
+        ****************
+        UPDATE THE FRAME
+        ****************
+        */
+
+        // check if state is playing
+        if (state == State::PLAYING) {
+            // update times
+            Time dt = clock.restart(); // update change in time
+            float dtAsSeconds = dt.asSeconds(); // convert dt to seconds
+
+            // update player
+            player.update(dtAsSeconds);
+            Vector2f playerPos(player.getCenter()); // note players new pos
+
+            // TODO if at edge, do not center anymore
+            // make view centered around player
+            mainView.setCenter(player.getCenter());
+        } // end update state playing
+
+        // TODO mouse coords in menus?
+        /**
+        if (state == State::CRAFTING) {
+            // check mouse pointer
+            mouseScreenPos = Mouse::getPosition(); // get mouse pos on screen
+            mouseWorldPos = window.mapPixelToCoords(
+                Mouse::getPosition(), mainView); // convert to world coords of mainView
+        }
+        */
+
+        /*
+        ****************
+        DRAW THE SCENE
+        ****************
+        */
+
+        // check if state is playing
+        switch (state) {
+            case State::PLAYING:
+                window.clear();
+                // draw everything related to mainView window
+                window.setView(mainView);
+                window.draw(player.getSprite()); // draw player
+                break;
+            case State::JOURNAL:
+                break;
+            case State::PAUSED:
+                break;
+            case State::CRAFTING:
+                break;
+            case State::NEW_GAME:
+                break;
+            default: break;
+        }
+        window.display(); // display window
+
+    } // end game loop
 
     return 0;
 }

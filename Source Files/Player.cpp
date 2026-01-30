@@ -82,7 +82,7 @@ void Player::stopDown() {
     downPressed = false;
 }
 // update player every frame
-void Player::update(float dt, Vector2i mousePos) {
+void Player::update(float dt) {
     // update current position
     // figure out angle player is facing player is facing
     if (leftPressed) {
