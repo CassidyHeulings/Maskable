@@ -11,7 +11,7 @@ public:
     void resetPlayerStats(); // call at the end of every game
     sf::FloatRect getPosition(); // players position
     sf::Vector2f getCenter(); // center of player
-    sf::Vector2i getDirection(); // direction player is facing
+    int getDirection(); // direction player is facing
     sf::Sprite getSprite(); // send copy of sprite to main function
     // player movement
     void moveLeft();
@@ -30,7 +30,8 @@ private:
     const float START_SPEED = 300;
     sf::Vector2f position; // players current position
     sf::Sprite sprite; // sprite
-    sf::Texture texture; // players texture
+    sf::Texture texture; // current texture
+    std::vector<sf::Texture> textureList; // all the textures
     sf::Vector2f resolution; // screen resolution
     sf::IntRect world; // size of world
     int tileSize; // size of tiles in world
@@ -40,6 +41,6 @@ private:
     bool leftPressed;
     bool rightPressed;
     // direction player was last facing
-    sf::Vector2i lastFacing;
+    int lastFacing;
     float speed; // speed in pixels per second
 };

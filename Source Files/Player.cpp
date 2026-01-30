@@ -6,13 +6,15 @@ using namespace sf;
 
 // constructor
 Player::Player()
-    : speed(START_SPEED),
-      texture(),
-      sprite() {
-    // associate texture with sprite
-    // TODO change file name
+    : speed(START_SPEED) {
+    // TODO keep adding
+    // add all files into texture list
     texture.loadFromFile("../Graphics/PlayerFront.png");
-    sprite.setTexture(texture);
+    textureList.push_back(texture);
+    texture.loadFromFile("../Graphics/PlayerBack.png");
+    textureList.push_back(texture);
+    // associate texture with sprite
+    sprite.setTexture(textureList[0]);
     // set origin of sprite to center
     sprite.setOrigin(35,74);
 }
@@ -46,7 +48,7 @@ Vector2f Player::getCenter() {
     return position;
 }
 // direction player is facing
-Vector2i Player::getDirection() {
+int Player::getDirection() {
     return lastFacing;
 }
 // makes copy of sprite to main function
@@ -84,23 +86,43 @@ void Player::stopDown() {
 // update player every frame
 void Player::update(float dt) {
     // update current position
-    // figure out angle player is facing player is facing
+    // figure out angle player is facing
+    // TODO set running textures and find better way to not set texture every 2 seconds
     if (leftPressed) {
         position.x -= speed * dt;
-        lastFacing.x = -1;
+        sprite.setTexture(textureList[0]);
+        lastFacing = -1;
     }
     if (rightPressed) {
         position.x += speed * dt;
-        lastFacing.x = 1;
+        sprite.setTexture(textureList[0]);
+        lastFacing = -2;
     }
     if (upPressed) {
         position.y -= speed * dt;
-        lastFacing.y = -1;
+        sprite.setTexture(textureList[1]);
+        lastFacing = 1;
     }
     if (downPressed) {
         position.y += speed * dt;
-        lastFacing.y = 1;
+        sprite.setTexture(textureList[0]);
+        lastFacing = 2;
     }
+
+    // TODO adjust with more textures
+    // if player is stopped, fix texture
+    if (!(leftPressed & rightPressed & upPressed & downPressed)) {
+        // facing left
+        if (lastFacing == -1) sprite.setTexture(textureList[0]);
+        // facing right
+        else if (lastFacing == -2) sprite.setTexture(textureList[0]);
+        // facing up
+        else if (lastFacing == 1) sprite.setTexture(textureList[1]);
+        // facing down
+        else if (lastFacing == 2) sprite.setTexture(textureList[0]);
+
+    }
+
     sprite.setPosition(position.x, position.y);
     // keep player in world bounds
     // each size has a wall with dimensions of 1x1 tile size
