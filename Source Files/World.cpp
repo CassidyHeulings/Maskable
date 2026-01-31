@@ -3,8 +3,6 @@
 //
 
 #include "../Header Files/World.hpp"
-
-#include <iostream>
 using namespace sf;
 
 // editing background in main

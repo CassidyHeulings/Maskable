@@ -12,6 +12,12 @@ add_executable(Maskable "Source Files/main.cpp"
         "Source Files/World.cpp"
         "Header Files/World.hpp"
         "Source Files/TextureHolder.cpp"
-        "Header Files/TextureHolder.hpp")
+        "Header Files/TextureHolder.hpp"
+        "Header Files/Inventory.hpp"
+        "Source Files/Inventory.cpp"
+        "Source Files/Item.cpp"
+        "Header Files/Item.hpp"
+        "Source Files/Interactable.cpp"
+        "Header Files/Interactable.hpp")
 
 target_link_libraries(Maskable sfml-graphics sfml-window sfml-system sfml-audio)
