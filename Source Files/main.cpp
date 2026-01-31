@@ -25,7 +25,7 @@ int main() {
     TextureHolder holder;
     // TODO decide game states
     enum class State { PAUSED, CRAFTING, NEW_GAME, PLAYING, JOURNAL };
-    State state = State::PAUSED; // start game in paused state
+    State state = State::NEW_GAME; // start game in paused state
 
     // create SFML window with screen resolution
     Vector2f resolution;
@@ -52,6 +52,11 @@ int main() {
     world.left = 0;
     world.top = 0;
 
+    // menu overlays
+    RectangleShape dimOverlay;
+    dimOverlay.setSize(Vector2f(world.width, world.height));
+    dimOverlay.setFillColor(Color(0, 0, 0, 150));
+
     // create interactable
     Interactable tree(1, getBiomeRect(1));
     bool interacting = false;
@@ -71,65 +76,50 @@ int main() {
         // Handle events by polling
         Event event;
         while (window.pollEvent(event)) {
-            // close window
-            if (event.type == Event::Closed) window.close();
-
-            // handle key presses
             if (event.type == Event::KeyPressed) {
-                if (state == State::PAUSED) {
-                    switch (event.key.code) {
+                switch (state) {
+                    case State::PAUSED:
+                        switch (event.key.code) {
                         case Keyboard::Escape:
-                            state = State::PLAYING;
-                            clock.restart(); // reset clock to avoid frame jump
-                            break;
+                                state = State::PLAYING;
+                                clock.restart();
+                                break;
                         case Keyboard::Enter:
-                            state = State::NEW_GAME;
-                            break;
-                        case Keyboard::Delete:
-                            window.close();
-                            break;
-                        default: break;
+                                state = State::NEW_GAME;
+                                break;
+                        case Keyboard::BackSpace:
+                                window.close();
+                                break;
+                        } break;
+                    case State::NEW_GAME: {
+                        int sizeTile = createBackground(background, world);
+                        player.spawn(world, resolution, sizeTile);
+                        state = State::PLAYING;
+                        clock.restart();
+                        break;
                     }
-                }
-                if (state == State::CRAFTING) {
-                    switch (event.key.code) {
-                        case Keyboard::Escape:
+                    case State::PLAYING:
+                        switch (event.key.code) {
+                            case Keyboard::Escape:
+                                state = State::PAUSED;
+                                break;
+                            case Keyboard::Enter:
+                                interacting = true;
+                                break;
+                            case Keyboard::Delete:
+                                window.close();
+                                break;
+                            }
+                            break;
+                    case State::CRAFTING:
+                    case State::JOURNAL:
+                        if (event.key.code == Keyboard::Escape) {
                             state = State::PLAYING;
                             clock.restart();
-                            break;
-                        // TODO add crafting interactions
-                        default: break;
-                    }
+                        }
+                        break;
                 }
-                if (state == State::JOURNAL) {
-                    switch (event.key.code) {
-                        case Keyboard::Escape:
-                            state = State::PLAYING;
-                            clock.restart();
-                            break;
-                            // TODO add journal interactions
-                        default: break;
-                    }
-                }
-                if (state == State::NEW_GAME) {
-                    // pass vertex array by reference to create the background here
-                    int sizeTile = createBackground(background, world);
-                    player.spawn(world, resolution, sizeTile); // spawn player in center of arena
-                    state = State::PLAYING;
-                    clock.restart(); // reset clock to avoid frame jump
-                } // end game preparation
-                if (state == State::PLAYING) {
-                    switch (event.key.code) {
-                        case Keyboard::Escape:
-                            state = State::PAUSED;
-                            break;
-                        case Keyboard::Enter:
-                            interacting = true;
-                            break;
-                        default: break;
-                    }
-                }
-            } // end key pressed
+            }
 
             // real-time key presses (movement)
             if (state == State::PLAYING) {
@@ -240,10 +230,19 @@ int main() {
             case State::JOURNAL:
                 break;
             case State::PAUSED:
+                window.clear();
+                // draw everything related to mainView window
+                window.setView(mainView);
+                window.draw(background, &backgroundTexture); // draw background
+                window.draw(tree.getSprite());
+                window.draw(player.getSprite()); // draw player
+                window.draw(dimOverlay);
                 break;
             case State::CRAFTING:
                 break;
             case State::NEW_GAME:
+                window.clear();
+                window.draw(dimOverlay);
                 break;
             default: break;
         }
