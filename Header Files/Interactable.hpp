@@ -7,16 +7,19 @@
 
 class Interactable {
 public:
-    Interactable(int type); // prepare interactable
-    void setWorld(sf::IntRect worldCoords);
-    void interacted(); // player is interacting
-    // send list of interactable positions
-    std::vector<sf::Vector2f> getPositions(int type);
+    Interactable(int type, sf::IntRect biomeCoords); // prepare interactable
+    sf::Vector2f getPosition();
+    int interact();
+    int getType();
     sf::Sprite getSprite();
+    void update(float dt);
 private:
+    int intType;
+    sf::Vector2f position;
     sf::Sprite sprite;
     sf::IntRect worldCoords;
     // making sure time in between collection
     float timeSinceCollect;
     float timeToCollect;
+    bool interacting = false;
 };

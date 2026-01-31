@@ -8,7 +8,7 @@
 class Inventory {
 public:
     Inventory(); // prepare a new inventory
-    void collect(); // add item to inventory
+    void collect(int type); // add item to inventory
     void update(); // ??
 private:
     // number of items
