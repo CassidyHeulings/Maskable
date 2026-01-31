@@ -12,6 +12,8 @@ Player::Player()
     // add all file names into texture list
     textureList.emplace_back("../Graphics/PlayerFront.png");
     textureList.emplace_back("../Graphics/PlayerBack.png");
+    textureList.emplace_back("../Graphics/PlayerRight.png");
+    textureList.emplace_back("../Graphics/PlayerLeft.png");
     // associate texture with sprite
     sprite = Sprite(TextureHolder::GetTexture(textureList[0]));
     // set origin of sprite to center
@@ -86,15 +88,14 @@ void Player::stopDown() {
 void Player::update(float dt) {
     // update current position
     // figure out angle player is facing
-    // TODO set running textures and find better way to not set texture every 2 seconds
     if (leftPressed) {
         position.x -= speed * dt;
-        sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
+        sprite.setTexture(TextureHolder::GetTexture(textureList[3]));
         lastFacing = -1;
     }
     if (rightPressed) {
         position.x += speed * dt;
-        sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
+        sprite.setTexture(TextureHolder::GetTexture(textureList[2]));
         lastFacing = -2;
     }
     if (upPressed) {
@@ -118,9 +119,9 @@ void Player::update(float dt) {
     // if player is stopped, fix texture
     if (!(leftPressed && rightPressed && upPressed && downPressed)) {
         // facing left
-        if (lastFacing == -1) sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
+        if (lastFacing == -1) sprite.setTexture(TextureHolder::GetTexture(textureList[3]));
         // facing right
-        else if (lastFacing == -2) sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
+        else if (lastFacing == -2) sprite.setTexture(TextureHolder::GetTexture(textureList[2]));
         // facing up
         else if (lastFacing == 1) sprite.setTexture(TextureHolder::GetTexture(textureList[1]));
         // facing down
