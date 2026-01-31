@@ -7,3 +7,4 @@
 
 // receive a background and arena dimensions
 int createBackground(sf::VertexArray& va, sf::IntRect arena);
+sf::FloatRect getBiomeRect(int type);

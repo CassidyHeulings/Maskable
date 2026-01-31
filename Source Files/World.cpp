@@ -25,22 +25,6 @@ int createBackground(VertexArray& va, IntRect world) {
     int currVertex = 0;
     //srand((int)time(nullptr));
 
-    // TODO change into biomes
-    // make sure the following calculations are in terms of tiles:
-
-    // while we are at 5 tiles less than width/height
-    // generate random number for biome type
-    // generate random number for height and width of biome
-    // store in int rect the coords of the biome for setting textures
-    // *this int rect should be a var with a getter in class so game can access where to place interactive sprites
-    // on final 5 biomes, check that each biome was used at least once
-    // if not, generate that biome then continue
-
-    // divide int rect into tiles
-    // set border tiles the same way we did with wall
-    // set all in between tiles
-    // ensure we are transforming tiles as necessary (reversed or upside down if allowed)
-
     // set biome locations
     IntRect grassZone = IntRect(1, 1, 9, 7);
     IntRect sandZone = IntRect(10, 1, 9, 7);
@@ -410,4 +394,13 @@ int createBackground(VertexArray& va, IntRect world) {
         }
     }
     return TILE_SIZE;
+}
+
+FloatRect getBiomeRect(int type) {
+    if (type == 1) return FloatRect(1 * 128, 1 * 128, 9 * 128, 7 * 128); // grass
+    if (type == 2) return FloatRect(10 * 128, 1 * 128, 9 * 128, 7 * 128); // sand
+    if (type == 3) return FloatRect(1 * 128, 8 * 128, 9 * 128, 6 * 128); // mushroom
+    if (type == 4) return FloatRect(10 * 128, 8 * 128, 9 * 128, 6 * 128); // stone
+    if (type == 5) return FloatRect(13 * 128,2 * 128,5 * 128,3 * 128); // water
+    return FloatRect(0,0,20 * 128,15 * 128);
 }

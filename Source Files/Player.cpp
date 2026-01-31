@@ -2,7 +2,11 @@
 // Created by Cassidy Heulings on 1/29/26.
 //
 #include "../Header Files/Player.hpp"
+
+#include <iostream>
+
 #include "../Header Files/TextureHolder.hpp"
+#include "../Header Files/World.hpp"
 using namespace sf;
 
 // constructor
@@ -84,21 +88,54 @@ void Player::stopUp() {
 void Player::stopDown() {
     downPressed = false;
 }
+
+void Player::intUp() {
+    interUp = true;
+}
+
+void Player::intDown() {
+    interDown = true;
+}
+
+void Player::intLeft() {
+    interLeft = true;
+}
+
+void Player::intRight() {
+    interRight = true;
+}
+
+void Player::intNoneUp() {
+    interUp = false;
+}
+
+void Player::intNoneDown() {
+    interDown = false;
+}
+
+void Player::intNoneLeft() {
+    interLeft = false;
+}
+
+void Player::intNoneRight() {
+    interRight = false;
+}
+
 // update player every frame
 void Player::update(float dt) {
     // update current position
     // figure out angle player is facing
-    if (leftPressed) {
+    if (leftPressed && !interLeft) {
         position.x -= speed * dt;
         sprite.setTexture(TextureHolder::GetTexture(textureList[3]));
         lastFacing = -1;
     }
-    if (rightPressed) {
+    if (rightPressed && !interRight) {
         position.x += speed * dt;
         sprite.setTexture(TextureHolder::GetTexture(textureList[2]));
         lastFacing = -2;
     }
-    if (upPressed) {
+    if (upPressed && !interUp) {
         position.y -= speed * dt;
         // only use up texture when going straight up
         if (!(leftPressed || rightPressed)) {
@@ -106,7 +143,7 @@ void Player::update(float dt) {
             lastFacing = 1;
         }
     }
-    if (downPressed) {
+    if (downPressed && !interDown) {
         position.y += speed * dt;
         // only use down texture when going straight down
         if (!(leftPressed || rightPressed)) {
@@ -132,7 +169,6 @@ void Player::update(float dt) {
     sprite.setPosition(position.x, position.y);
     // keep player in world bounds
     // each size has a wall with dimensions of 1x1 tile size
-    // TODO adjust for side profiles
     // stop player from walking past wall
     if (position.x > world.width - tileSize - 35) position.x = world.width - tileSize - 35;
     if (position.x < world.left + tileSize + 35) position.x = world.left + tileSize + 35;
@@ -140,4 +176,27 @@ void Player::update(float dt) {
     if (position.y > world.height - tileSize - 74) position.y = world.height - tileSize - 74;
     // allow player to walk up to wall
     if (position.y < world.top + tileSize) position.y = world.top + tileSize;
+
+    // stop player from walking into ocean
+    // horizontal
+    if (position.x - 35 < getBiomeRect(5).left + getBiomeRect(5).width
+        && getBiomeRect(5).contains(position.x - 35, position.y + 72)) {
+        position.x = getBiomeRect(5).left + getBiomeRect(5).width + 35; // right side
+    }
+    else if (position.x + 35 > getBiomeRect(5).left
+        && getBiomeRect(5).contains(position.x + 35, position.y + 72)) {
+        position.x = getBiomeRect(5).left - 35; // left side
+    }
+    // vertical
+    if (position.y < getBiomeRect(5).top + getBiomeRect(5).height
+        && (getBiomeRect(5).contains(position.x + 32, position.y - 74)
+        || getBiomeRect(5).contains(position.x - 32, position.y - 74))) {
+        position.y = getBiomeRect(5).top + getBiomeRect(5).height; // bottom side
+    }
+    else if (position.y + 74 > getBiomeRect(5).top
+        && (getBiomeRect(5).contains(position.x + 32, position.y + 74)
+        || getBiomeRect(5).contains(position.x - 32, position.y + 74))) {
+        position.y = getBiomeRect(5).top - 74; // top side
+    }
+
 }

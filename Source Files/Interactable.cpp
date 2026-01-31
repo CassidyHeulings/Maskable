@@ -7,13 +7,13 @@
 using namespace sf;
 using namespace std;
 
-Interactable::Interactable(int type, IntRect biomeCoords) : intType{type} {
+Interactable::Interactable(int type, FloatRect biomeCoords) : intType{type} {
     timeSinceCollect = 3;
     timeToCollect = 2;
     srand((int)time(0) / type);
-    int x = rand() % biomeCoords.width + biomeCoords.left - 1;
+    int x = rand() % static_cast<int>(biomeCoords.width) + static_cast<int>(biomeCoords.left - 1);
     srand((int)time(0) * type);
-    int y = rand() % biomeCoords.height + biomeCoords.top - 1;
+    int y = rand() % static_cast<int>(biomeCoords.height) + static_cast<int>(biomeCoords.top - 1);
     // set texture, type, position of interactable
     if (type == 1) {
         sprite = Sprite(TextureHolder::GetTexture("../Graphics/PlayerFront.png"));

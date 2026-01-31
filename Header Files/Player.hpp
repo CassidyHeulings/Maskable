@@ -23,6 +23,15 @@ public:
     void stopRight();
     void stopUp();
     void stopDown();
+    // prevent player from hitting interactable
+    void intUp();
+    void intDown();
+    void intLeft();
+    void intRight();
+    void intNoneUp();
+    void intNoneDown();
+    void intNoneLeft();
+    void intNoneRight();
     // player update - called once per frame
     void update(float dt);
     // TODO mask effects
@@ -42,5 +51,11 @@ private:
     bool rightPressed;
     // direction player was last facing
     int lastFacing;
-    float speed; // speed in pixels per second
+    // interactable movement vars
+    bool interRight;
+    bool interLeft;
+    bool interUp;
+    bool interDown;
+    // speed in pixels per second
+    float speed;
 };

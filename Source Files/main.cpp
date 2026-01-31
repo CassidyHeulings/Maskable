@@ -1,11 +1,22 @@
 //
 // Created by Cassidy Heulings on 1/29/26.
 //
+#include <iostream>
 #include <SFMl/Graphics.hpp>
 #include "../Header Files/Player.hpp"
 #include "../Header Files/World.hpp"
 #include "../Header Files/TextureHolder.hpp"
+#include "../Header Files/Interactable.hpp"
 using namespace sf;
+
+/**
+ * BIOME & CORRESPONDING ITEM TYPES
+ * Grass/wood -> 1
+ * Sand -> 2
+ * Mushroom -> 3
+ * Stone -> 4
+ * Water -> 5
+*/
 
 int main() {
     // initializing screen/world vars
@@ -33,6 +44,16 @@ int main() {
     IntRect world; // boundaries of world
     VertexArray background; // create background
     Texture backgroundTexture = TextureHolder::GetTexture("../Graphics/BackgroundSheet.png"); // load texture for background
+
+    // world coords
+    world.width = 2560; // 128 * 20
+    world.height = 1920; // 128 * 15
+    world.left = 0;
+    world.top = 0;
+
+
+    // create interactable
+    Interactable tree(1, getBiomeRect(1));
 
     // game loop
     while (window.isOpen()) {
@@ -88,11 +109,6 @@ int main() {
                     }
                 }
                 if (state == State::NEW_GAME) {
-                    // prepare new game level
-                    world.width = 2560; // 128 * 20
-                    world.height = 1920; // 128 * 15
-                    world.left = 0;
-                    world.top = 0;
                     // pass vertex array by reference to create the background here
                     int sizeTile = createBackground(background, world);
                     player.spawn(world, resolution, sizeTile); // spawn player in center of arena
@@ -154,6 +170,34 @@ int main() {
             // make view centered around player
             mainView.setCenter(viewPosition);
 
+            // TODO change interactable width and height
+            // stop player from walking into interactable
+
+            /**
+            if (player.getPosition().left - 35 < tree.getPosition().x + 35 // right side
+                && tree.getSprite().getGlobalBounds().contains(player.getPosition().left - 35, player.getPosition().top)) {
+                player.intRight();
+            }
+            else if (player.getPosition().left + 35 > tree.getPosition().x - 35 // left side
+                && tree.getSprite().getGlobalBounds().contains(player.getCenter().x + 35, player.getCenter().y + 72)) {
+                player.intLeft();
+            }
+            else player.intNoneHori();
+            // vertical
+            if (player.getPosition().top - 20 < tree.getPosition().y // bottom side
+                && (tree.getSprite().getGlobalBounds().contains(player.getCenter().x + 32, player.getCenter().y - 74)
+                || tree.getSprite().getGlobalBounds().contains(player.getCenter().x - 32, player.getCenter().y - 74))) {
+                player.intUp();
+            }
+            else if (player.getPosition().top + 74 > tree.getPosition().x - 74 // top side
+                && (tree.getSprite().getGlobalBounds().contains(player.getCenter().x + 32, player.getCenter().y + 74)
+                || tree.getSprite().getGlobalBounds().contains(player.getCenter().x - 32, player.getCenter().y + 74))) {
+                player.intDown();
+            }
+            else player.intNoneVert();
+            */
+
+
         } // end update state playing
 
         // TODO mouse coords in menus?
@@ -179,6 +223,7 @@ int main() {
                 window.setView(mainView);
                 window.draw(background, &backgroundTexture); // draw background
                 window.draw(player.getSprite()); // draw player
+                window.draw(tree.getSprite());
                 break;
             case State::JOURNAL:
                 break;
