@@ -7,6 +7,7 @@
 #include "../Header Files/World.hpp"
 #include "../Header Files/TextureHolder.hpp"
 #include "../Header Files/Interactable.hpp"
+#include "../Header Files/Inventory.hpp"
 using namespace sf;
 
 /**
@@ -51,9 +52,12 @@ int main() {
     world.left = 0;
     world.top = 0;
 
-
     // create interactable
     Interactable tree(1, getBiomeRect(1));
+    bool interacting = false;
+
+    // create inventory
+    Inventory inventory = Inventory();
 
     // game loop
     while (window.isOpen()) {
@@ -72,7 +76,6 @@ int main() {
 
             // handle key presses
             if (event.type == Event::KeyPressed) {
-                // **** inventory slots **** //
                 if (state == State::PAUSED) {
                     switch (event.key.code) {
                         case Keyboard::Escape:
@@ -120,7 +123,9 @@ int main() {
                         case Keyboard::Escape:
                             state = State::PAUSED;
                             break;
-                        // TODO add interaction buttons
+                        case Keyboard::Enter:
+                            interacting = true;
+                            break;
                         default: break;
                     }
                 }
@@ -149,7 +154,8 @@ int main() {
 
             // update player
             player.update(dtAsSeconds);
-            Vector2f playerPos(player.getCenter()); // note players new pos
+            // update tree
+            tree.update(dtAsSeconds);
 
             // set camera view
             // horizontal
@@ -169,6 +175,12 @@ int main() {
 
             // make view centered around player
             mainView.setCenter(viewPosition);
+
+            // interactable collecting
+            if (interacting && player.getPosition().intersects(tree.getSprite().getGlobalBounds())) {
+                inventory.collect(1, tree.interact());
+                interacting = false;
+            }
 
             // TODO change interactable width and height
             // stop player from walking into interactable
@@ -222,8 +234,8 @@ int main() {
                 // draw everything related to mainView window
                 window.setView(mainView);
                 window.draw(background, &backgroundTexture); // draw background
-                window.draw(player.getSprite()); // draw player
                 window.draw(tree.getSprite());
+                window.draw(player.getSprite()); // draw player
                 break;
             case State::JOURNAL:
                 break;

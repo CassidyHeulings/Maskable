@@ -8,8 +8,8 @@
 class Inventory {
 public:
     Inventory(); // prepare a new inventory
-    void collect(int type); // add item to inventory
-    void update(); // ??
+    void collect(int type, int amount); // add item to inventory
+    int getItemCount(int type);
 private:
     // number of items
     int woodNum;
