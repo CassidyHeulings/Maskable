@@ -32,7 +32,7 @@ Player::Player()
     interUp = false;
 }
 // spawns player
-void Player::spawn(IntRect worldSize, Vector2f res, int sizeTile) {
+void Player::spawn(IntRect worldSize, Vector2f res, int sizeTile, std::vector<FloatRect> interactablePos) {
     // place player in middle of arena
     position.x = worldSize.width / 2;
     position.y = worldSize.height / 2;
@@ -46,6 +46,8 @@ void Player::spawn(IntRect worldSize, Vector2f res, int sizeTile) {
     // store resolution
     resolution.x = res.x;
     resolution.y = res.y;
+    // store interactable positions
+    interactablePositions = interactablePos;
 }
 // reset stats at end of every game
 void Player::resetPlayerStats() {
@@ -234,6 +236,30 @@ void Player::update(float dt) {
         && (getBiomeRect(5).contains(position.x + 32, position.y + 74)
         || getBiomeRect(5).contains(position.x - 32, position.y + 74))) {
         position.y = getBiomeRect(5).top - 74; // top side
+    }
+
+    // stop player from walking into interactable
+    // horizontal
+    for (auto& interactableItem : interactablePositions) {
+        if (position.x - 35 < interactableItem.left + interactableItem.width
+           && interactableItem.contains(position.x - 35, position.y + 72)) {
+            position.x = interactableItem.left + interactableItem.width + 35; // right side
+           }
+        else if (position.x + 35 > interactableItem.left
+            && interactableItem.contains(position.x + 35, position.y + 72)) {
+            position.x = interactableItem.left - 35; // left side
+            }
+        // vertical
+        if (position.y < interactableItem.top + interactableItem.height
+            && (interactableItem.contains(position.x + 32, position.y - 74)
+            || interactableItem.contains(position.x - 32, position.y - 74))) {
+            position.y = interactableItem.top + interactableItem.height; // bottom side
+            }
+        else if (position.y + 74 > interactableItem.top
+            && (interactableItem.contains(position.x + 32, position.y + 74)
+            || interactableItem.contains(position.x - 32, position.y + 74))) {
+            position.y = interactableItem.top - 74; // top side
+            }
     }
 
 }

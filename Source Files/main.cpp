@@ -118,6 +118,12 @@ int main() {
     Interactable tree2(1, getBiomeRect(1), 2);
     interactableList.push_back(tree2);
     bool interacting = false;
+    // store positions
+    std::vector<FloatRect> interactablePositions;
+    for (auto& interactableItem : interactableList)
+    {
+        interactablePositions.push_back(interactableItem.getSprite().getGlobalBounds());
+    }
 
     // create inventory
     Inventory inventory = Inventory();
@@ -172,7 +178,7 @@ int main() {
                         } break;
                     case State::NEW_GAME: {
                         int sizeTile = createBackground(background, world);
-                        player.spawn(world, resolution, sizeTile);
+                        player.spawn(world, resolution, sizeTile, interactablePositions);
                         state = State::PLAYING;
                         clock.restart();
                         break;
@@ -288,34 +294,6 @@ int main() {
                     interacting = false;
                 }
             }
-
-            // TODO change interactable width and height
-            // stop player from walking into interactable
-
-            /**
-            if (player.getPosition().left - 35 < tree.getPosition().x + 35 // right side
-                && tree.getSprite().getGlobalBounds().contains(player.getPosition().left - 35, player.getPosition().top)) {
-                player.intRight();
-            }
-            else if (player.getPosition().left + 35 > tree.getPosition().x - 35 // left side
-                && tree.getSprite().getGlobalBounds().contains(player.getCenter().x + 35, player.getCenter().y + 72)) {
-                player.intLeft();
-            }
-            else player.intNoneHori();
-            // vertical
-            if (player.getPosition().top - 20 < tree.getPosition().y // bottom side
-                && (tree.getSprite().getGlobalBounds().contains(player.getCenter().x + 32, player.getCenter().y - 74)
-                || tree.getSprite().getGlobalBounds().contains(player.getCenter().x - 32, player.getCenter().y - 74))) {
-                player.intUp();
-            }
-            else if (player.getPosition().top + 74 > tree.getPosition().x - 74 // top side
-                && (tree.getSprite().getGlobalBounds().contains(player.getCenter().x + 32, player.getCenter().y + 74)
-                || tree.getSprite().getGlobalBounds().contains(player.getCenter().x - 32, player.getCenter().y + 74))) {
-                player.intDown();
-            }
-            else player.intNoneVert();
-            */
-
 
         } // end update state playing
 

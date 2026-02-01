@@ -7,7 +7,7 @@
 class Player {
 public:
     Player();
-    void spawn(sf::IntRect worldSize, sf::Vector2f res, int sizeTile);
+    void spawn(sf::IntRect worldSize, sf::Vector2f res, int sizeTile, std::vector<sf::FloatRect> interactablePos);
     void resetPlayerStats(); // call at the end of every game
     sf::FloatRect getPosition(); // players position
     sf::Vector2f getCenter(); // center of player
@@ -61,4 +61,5 @@ private:
     float speed;
     sf::Sprite woodMask;
     bool woodMaskOn;
+    std::vector<sf::FloatRect> interactablePositions;
 };

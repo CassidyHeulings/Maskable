@@ -15,8 +15,6 @@ add_executable(Maskable "Source Files/main.cpp"
         "Header Files/TextureHolder.hpp"
         "Header Files/Inventory.hpp"
         "Source Files/Inventory.cpp"
-        "Source Files/Item.cpp"
-        "Header Files/Item.hpp"
         "Source Files/Interactable.cpp"
         "Header Files/Interactable.hpp")
 
