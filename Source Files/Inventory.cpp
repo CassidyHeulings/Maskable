@@ -104,3 +104,10 @@ std::string Inventory::getMaskText(int type) {
     }
 }
 
+int Inventory::getMaskCount(int type) {
+    if (type == 1) {
+        return woodMaskCrafted;
+    }
+    return 0;
+}
+

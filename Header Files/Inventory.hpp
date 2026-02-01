@@ -23,6 +23,7 @@ public:
     void setSelectionPosition(sf::Vector2f position);
     void setMaskPosition(sf::Vector2f position);
     std::string getMaskText(int type);
+    int getMaskCount(int type);
 private:
     // number of items
     sf::Sprite inventorySprite;

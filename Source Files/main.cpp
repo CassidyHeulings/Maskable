@@ -82,6 +82,19 @@ int main() {
     maskText.setFillColor(Color::White);
     maskText.setCharacterSize(35);
     maskText.setPosition(910, 300);
+    // crafting HUD
+    Text craftingText;
+    craftingText.setFont(font);
+    craftingText.setCharacterSize(35);
+    craftingText.setFillColor(Color::White);
+    craftingText.setPosition(130, 50);
+    craftingText.setString("< esc > to exit    < enter > to craft     < Q > to put mask on");
+    Text craftingText2;
+    craftingText2.setFont(font);
+    craftingText2.setCharacterSize(35);
+    craftingText2.setFillColor(Color::White);
+    craftingText2.setPosition(400, 700);
+    craftingText2.setString("Use mouse to select mask");
     // time since HUD was updated
     int framesSinceLastHUDUpdate = 0;
     // how often the HUD is updated
@@ -237,14 +250,6 @@ int main() {
                 std::stringstream ssWood;
                 ssWood << "Wood: " << inventory.getItemCount(1) << "/300";
                 woodText.setString(ssWood.str());
-                std::stringstream ssWoodCraft;
-                ssWoodCraft << "Wood: " << inventory.getItemCount(1);
-                woodCraftingText.setString(ssWoodCraft.str());
-                // TODO check for if mask is selected
-                std::stringstream ssMask;
-                if (inventory.getMaskSelected(1)) ssMask << inventory.getMaskText(1);
-                else ssMask << "";
-                maskText.setString(ssMask.str());
                 framesSinceLastHUDUpdate = 0;
             }
 
@@ -340,8 +345,11 @@ int main() {
             else player.toggleWoodMask(false);
 
             // update HUD
+            std::stringstream ssWoodCraft;
+            ssWoodCraft << "Wood: " << inventory.getItemCount(1);
+            woodCraftingText.setString(ssWoodCraft.str());
             std::stringstream ssMask;
-            if (inventory.getMaskSelected(1)) ssMask << inventory.getMaskText(1);
+            if (inventory.getMaskSelected(1)) ssMask << inventory.getMaskText(1) << "\nOwned: " << inventory.getMaskCount(1);
             else ssMask << "";
             maskText.setString(ssMask.str());
         }
@@ -402,6 +410,8 @@ int main() {
                 window.draw(inventory.getMaskSprite());
                 window.draw(selectedSprite);
                 window.setView(hudView);
+                window.draw(craftingText);
+                window.draw(craftingText2);
                 window.draw(woodCraftingText);
                 window.draw(maskText);
                 window.setView(mainView);
