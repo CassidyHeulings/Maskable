@@ -22,6 +22,15 @@ Player::Player()
     sprite = Sprite(TextureHolder::GetTexture(textureList[0]));
     // set origin of sprite to center
     sprite.setOrigin(35,74);
+
+    woodMask = Sprite(TextureHolder::GetTexture("../Graphics/WoodMaskFront.png"));
+    woodMask.setOrigin(34,75);
+    woodMaskOn = false;
+
+    interRight = false;
+    interLeft = false;
+    interDown = false;
+    interUp = false;
 }
 // spawns player
 void Player::spawn(IntRect worldSize, Vector2f res, int sizeTile) {
@@ -60,6 +69,15 @@ int Player::getDirection() {
 Sprite Player::getSprite() {
     return sprite;
 }
+
+Sprite Player::getWoodMaskSprite() {
+    return woodMask;
+}
+
+void Player::toggleWoodMask(bool on) {
+    woodMaskOn = on;
+}
+
 // player movement
 // informs which keys were pressed
 void Player::moveLeft() {
@@ -129,11 +147,15 @@ void Player::update(float dt) {
         position.x -= speed * dt;
         sprite.setTexture(TextureHolder::GetTexture(textureList[3]));
         lastFacing = -1;
+        if (woodMaskOn) woodMask.setPosition(position.x - 6, position.y + 1);
+        else woodMask.setPosition(-1000, -1000);
     }
     if (rightPressed && !interRight) {
         position.x += speed * dt;
         sprite.setTexture(TextureHolder::GetTexture(textureList[2]));
         lastFacing = -2;
+        if (woodMaskOn) woodMask.setPosition(position.x + 5, position.y + 1);
+        else woodMask.setPosition(-1000, -1000);
     }
     if (upPressed && !interUp) {
         position.y -= speed * dt;
@@ -141,6 +163,7 @@ void Player::update(float dt) {
         if (!(leftPressed || rightPressed)) {
             sprite.setTexture(TextureHolder::GetTexture(textureList[1]));
             lastFacing = 1;
+            woodMask.setPosition(-1000, -1000);
         }
     }
     if (downPressed && !interDown) {
@@ -149,6 +172,8 @@ void Player::update(float dt) {
         if (!(leftPressed || rightPressed)) {
             sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
             lastFacing = 2;
+            if (woodMaskOn) woodMask.setPosition(position.x, position.y);
+            else woodMask.setPosition(-1000, -1000);
         }
     }
 

@@ -13,6 +13,8 @@ public:
     sf::Vector2f getCenter(); // center of player
     int getDirection(); // direction player is facing
     sf::Sprite getSprite(); // send copy of sprite to main function
+    sf::Sprite getWoodMaskSprite();
+    void toggleWoodMask(bool on);
     // player movement
     void moveLeft();
     void moveRight();
@@ -58,4 +60,6 @@ private:
     bool interDown;
     // speed in pixels per second
     float speed;
+    sf::Sprite woodMask;
+    bool woodMaskOn;
 };

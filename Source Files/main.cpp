@@ -2,6 +2,7 @@
 // Created by Cassidy Heulings on 1/29/26.
 //
 #include <iostream>
+#include <sstream>
 #include <SFMl/Graphics.hpp>
 #include "../Header Files/Player.hpp"
 #include "../Header Files/World.hpp"
@@ -48,6 +49,28 @@ int main() {
     VertexArray background; // create background
     Texture backgroundTexture = TextureHolder::GetTexture("../Graphics/BackgroundSheet.png"); // load texture for background
 
+    // HUD
+    View hudView(sf::FloatRect(0, 0, resolution.x,resolution.y));
+    Font font;
+    font.loadFromFile("../Graphics/Pixel.ttf");
+    // paused
+    Text pausedText;
+    pausedText.setFont(font);
+    pausedText.setCharacterSize(100);
+    pausedText.setFillColor(Color::White);
+    pausedText.setPosition(200, 200);
+    pausedText.setString("Press esc \nto continue");
+    // wood count
+    Text woodText;
+    woodText.setFont(font);
+    woodText.setCharacterSize(55);
+    woodText.setFillColor(Color::White);
+    woodText.setPosition(20, 0);
+    // time since HUD was updated
+    int framesSinceLastHUDUpdate = 0;
+    // how often the HUD is updated
+    int fpsFrameInterval = 1000;
+
     // world coords
     world.width = 2560; // 128 * 20
     world.height = 1920; // 128 * 15
@@ -65,20 +88,17 @@ int main() {
 
     // create inventory
     Inventory inventory = Inventory();
-    bool maskSelected = false;
+    bool maskCrafted = false;
 
     // selected
     Sprite selectedSprite;
     selectedSprite.setTexture(TextureHolder::GetTexture("../Graphics/Selection.png"));
     selectedSprite.setOrigin(256,256);
 
-    //TODO draw mouse
-    // player crosshair creation
-    window.setMouseCursorVisible(true); // hide mouse pointer
+    window.setMouseCursorVisible(false); // hide mouse pointer
     Sprite spriteMouse;
     Texture textureMouse = TextureHolder::GetTexture("../Graphics/Mouse.png");
     spriteMouse.setTexture(textureMouse);
-    spriteMouse.setOrigin(10,10);
 
     // game loop
     while (window.isOpen()) {
@@ -98,9 +118,9 @@ int main() {
                         // move sprite to outline the item
                         // cycle through each item and click on specific one
                         if (inventory.getMaskCoords(1, mainView.getCenter()).contains(mouseWorldPos.x + 72, mouseWorldPos.y + 230)) {
-                            maskSelected = true;
+                            inventory.setMaskSelected(true, 1);
                         }
-                        else maskSelected = false;
+                        else inventory.setMaskSelected(false, 1);
                     }
                 }
             }
@@ -149,9 +169,10 @@ int main() {
                                 // check have the items available
                                 // craft and add to inventory
                                 if (inventory.getMaskSelected(1)) {
-                                    if (inventory.getItemCount(10)) { // wood mask recipe
-                                        inventory.makeMask(1);
+                                    if (inventory.getItemCount(1) >= 10) { // wood mask recipe
+                                        maskCrafted = true;
                                     }
+                                    else maskCrafted = false;
                                 }
                                 break;
                         }
@@ -185,6 +206,16 @@ int main() {
             // update times
             Time dt = clock.restart(); // update change in time
             float dtAsSeconds = dt.asSeconds(); // convert dt to seconds
+            framesSinceLastHUDUpdate++;
+
+            // re-calculate every fpsMeasurementFrameInterval frames
+            if (framesSinceLastHUDUpdate > fpsFrameInterval) {
+                // update HUD text
+                std::stringstream ssWood;
+                ssWood << "Wood: " << inventory.getItemCount(1) << "/300";
+                woodText.setString(ssWood.str());
+                framesSinceLastHUDUpdate = 0;
+            }
 
             // update player
             player.update(dtAsSeconds);
@@ -215,9 +246,6 @@ int main() {
                 inventory.collect(1, tree.interact());
                 interacting = false;
             }
-
-            if (inventory.isMaskCrafted(1))
-                inventory.setMaskPosition(player.getCenter());
 
             // TODO change interactable width and height
             // stop player from walking into interactable
@@ -257,10 +285,21 @@ int main() {
             spriteMouse.setPosition(mouseWorldPos);
             inventory.setMaskPosition(Vector2f(mainView.getCenter().x - 105, mainView.getCenter().y - 112));
 
-            if (maskSelected) {
+            if (inventory.getMaskSelected(1)) {
                 selectedSprite.setPosition(mainView.getCenter());
             }
             else selectedSprite.setPosition(-1000, -1000);
+
+            if (maskCrafted) {
+                // make the mask
+                inventory.makeMask(1);
+                inventory.setItemCount(1, 10);
+            }
+            // check if mask is made
+            if (inventory.isMaskCrafted(1)) {
+                // maskToggle
+                player.toggleWoodMask(true);
+            }
         }
 
         /*
@@ -278,9 +317,11 @@ int main() {
                 window.draw(background, &backgroundTexture); // draw background
                 window.draw(tree.getSprite());
                 window.draw(player.getSprite()); // draw player
-                if (inventory.isMaskCrafted(1)) {
-                    window.draw(inventory.getMaskSprite());
-                }
+                window.draw(player.getWoodMaskSprite());
+                window.draw(player.getWoodMaskSprite());
+                // hud view
+                window.setView(hudView);
+                window.draw(woodText);
                 break;
             case State::JOURNAL:
                 break;
@@ -291,7 +332,9 @@ int main() {
                 window.draw(background, &backgroundTexture); // draw background
                 window.draw(tree.getSprite());
                 window.draw(player.getSprite()); // draw player
+                window.draw(player.getWoodMaskSprite());
                 window.draw(dimOverlay);
+                window.draw(pausedText);
                 break;
             case State::CRAFTING:
                 window.clear();
@@ -299,6 +342,7 @@ int main() {
                 window.draw(background, &backgroundTexture); // draw background
                 window.draw(tree.getSprite());
                 window.draw(player.getSprite()); // draw player
+                window.draw(player.getWoodMaskSprite());
                 window.draw(dimOverlay);
                 window.draw(inventory.getSprite());
                 window.draw(inventory.getMaskSprite());

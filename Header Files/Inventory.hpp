@@ -10,6 +10,7 @@ public:
     Inventory(); // prepare a new inventory
     void collect(int type, int amount); // add item to inventory
     int getItemCount(int type);
+    void setItemCount(int type, int amount);
     sf::IntRect getMaskCoords(int type, sf::Vector2f centerView);
     void setMaskSelected(bool selected, int type);
     bool getMaskSelected(int type);

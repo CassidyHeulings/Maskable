@@ -24,7 +24,6 @@ void Inventory::collect(int type, int amount) {
     if (type == 1 && woodNum < maxHold) {
         woodNum += amount;
         if (woodNum > maxHold) woodNum = maxHold;
-        std::cout << "You collected " << woodNum << " of " << maxHold << std::endl;
     }
 }
 
@@ -36,10 +35,16 @@ int Inventory::getItemCount(int type) {
         return 0;
 }
 
+void Inventory::setItemCount(int type, int amount) {
+    if (type == 1) {
+        woodNum -= amount;
+        if (woodNum < 0) woodNum = 0;
+    }
+}
+
 IntRect Inventory::getMaskCoords(int type, Vector2f centerView) {
     if (type == 1) { // wood mask
-        std::cout << "Mask coords: " << centerView.x - 100 << " " << centerView.y + 50 << " 100 100" << std::endl;
-        return IntRect(centerView.x - 100, centerView.y + 50, 100,100);
+        return IntRect(centerView.x - 105, centerView.y + 45, 135,135);
     }
 }
 
@@ -62,9 +67,11 @@ void Inventory::makeMask(int type) {
 }
 
 bool Inventory::isMaskCrafted(int type) {
+    bool crafted = false;
     if (type == 1) {
-        return woodMaskCrafted;
+        if (woodMaskCrafted >= 1) crafted = true;
     }
+    return crafted;
 }
 
 Sprite Inventory::getSprite() {
