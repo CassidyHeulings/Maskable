@@ -56,5 +56,7 @@ private:
     bool shroomMaskOn;
     sf::Sprite gemMask;
     bool gemMaskOn;
+    sf::Sprite triMask;
+    bool triMaskOn;
     std::vector<sf::FloatRect> interactablePositions;
 };

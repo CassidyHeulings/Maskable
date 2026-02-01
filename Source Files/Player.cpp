@@ -32,6 +32,10 @@ Player::Player()
     gemMask.setOrigin(34,75);
     gemMaskOn = false;
 
+    triMask = Sprite(TextureHolder::GetTexture("../Graphics/WoodMaskFront.png"));
+    triMask.setOrigin(34,75);
+    triMaskOn = false;
+
     interRight = false;
     interLeft = false;
     interDown = false;
@@ -76,12 +80,14 @@ Sprite Player::getMaskSprite(int type) {
     if (type == 1) return woodMask;
     if (type == 3) return shroomMask;
     if (type == 4) return gemMask;
+    if (type == 6) return triMask;
 }
 
 void Player::toggleMask(bool on, int type) {
     if (type == 1) woodMaskOn = on;
     if (type == 3) shroomMaskOn = on;
     if (type == 4) gemMaskOn = on;
+    if (type == 6) triMaskOn = on;
 }
 
 void Player::setSpeed(bool maskOn) {
@@ -133,6 +139,8 @@ void Player::update(float dt) {
         else shroomMask.setPosition(-1000, -1000);
         if (gemMaskOn) gemMask.setPosition(position.x - 6, position.y + 1);
         else gemMask.setPosition(-1000, -1000);
+        if (triMaskOn) triMask.setPosition(position.x - 6, position.y + 1);
+        else triMask.setPosition(-1000, -1000);
     }
     if (rightPressed && !interRight) {
         position.x += speed * dt;
@@ -145,6 +153,8 @@ void Player::update(float dt) {
         else shroomMask.setPosition(-1000, -1000);
         if (gemMaskOn) gemMask.setPosition(position.x + 5, position.y + 1);
         else gemMask.setPosition(-1000, -1000);
+        if (triMaskOn) triMask.setPosition(position.x + 5, position.y + 1);
+        else triMask.setPosition(-1000, -1000);
     }
     if (upPressed && !interUp) {
         position.y -= speed * dt;
@@ -156,6 +166,7 @@ void Player::update(float dt) {
             woodMask.setPosition(-1000, -1000);
             shroomMask.setPosition(-1000, -1000);
             gemMask.setPosition(-1000, -1000);
+            triMask.setPosition(-1000, -1000);
         }
     }
     if (downPressed && !interDown) {
@@ -171,6 +182,8 @@ void Player::update(float dt) {
             else shroomMask.setPosition(-1000, -1000);
             if (gemMaskOn) gemMask.setPosition(position.x, position.y);
             else gemMask.setPosition(-1000, -1000);
+            if (triMaskOn) triMask.setPosition(position.x, position.y);
+            else triMask.setPosition(-1000, -1000);
         }
     }
 
@@ -186,6 +199,8 @@ void Player::update(float dt) {
             else shroomMask.setPosition(-1000, -1000);
             if (gemMaskOn) gemMask.setPosition(position.x - 6, position.y + 1);
             else gemMask.setPosition(-1000, -1000);
+            if (triMaskOn) triMask.setPosition(position.x - 6, position.y + 1);
+            else triMask.setPosition(-1000, -1000);
         }
         // facing right
         else if (lastFacing == -2) {
@@ -197,6 +212,8 @@ void Player::update(float dt) {
             else shroomMask.setPosition(-1000, -1000);
             if (gemMaskOn) gemMask.setPosition(position.x + 5, position.y + 1);
             else gemMask.setPosition(-1000, -1000);
+            if (triMaskOn) triMask.setPosition(position.x + 5, position.y + 1);
+            else triMask.setPosition(-1000, -1000);
         }
         // facing up
         else if (lastFacing == 1) {
@@ -212,6 +229,8 @@ void Player::update(float dt) {
             else shroomMask.setPosition(-1000, -1000);
             if (gemMaskOn) gemMask.setPosition(position.x, position.y);
             else gemMask.setPosition(-1000, -1000);
+            if (triMaskOn) triMask.setPosition(position.x, position.y);
+            else triMask.setPosition(-1000, -1000);
         }
 
     }

@@ -19,6 +19,8 @@ Inventory::Inventory() {
     shroomMaskCrafted = 0;
     gemMaskSelected = false;
     gemMaskCrafted = 0;
+    triMaskSelected = false;
+    triMaskCrafted = 0;
 
     inventorySprite.setTexture(TextureHolder::GetTexture("../Graphics/Inventory.png"));
     inventorySprite.setOrigin(256, 256);
@@ -28,6 +30,8 @@ Inventory::Inventory() {
     shroomMaskSprite.setOrigin(70, 75);
     gemMaskSprite.setTexture(TextureHolder::GetTexture("../Graphics/WoodMask.png"));
     gemMaskSprite.setOrigin(70, 75);
+    triMaskSprite.setTexture(TextureHolder::GetTexture("../Graphics/WoodMask.png"));
+    triMaskSprite.setOrigin(70, 75);
     selectionSprite.setTexture(TextureHolder::GetTexture("../Graphics/Selection.png"));
     selectionSprite.setOrigin(256, 256);
 }
@@ -79,24 +83,30 @@ IntRect Inventory::getMaskCoords(int type, Vector2f centerView) {
     if (type == 4) {
         return IntRect(centerView.x - 105, centerView.y + 250, 135,150);
     }
+    if (type == 6) {
+        return IntRect(centerView.x + 110, centerView.y + 250, 135,150);
+    }
 }
 
 void Inventory::setMaskSelected(bool selected, int type) {
     if (type == 1) woodMaskSelected = selected;
     else if (type == 3) shroomMaskSelected = selected;
     else if (type == 4) gemMaskSelected = selected;
+    else if (type == 6) triMaskSelected = selected;
 }
 
 bool Inventory::getMaskSelected(int type) {
     if (type == 1) return woodMaskSelected;
     if (type == 3) return shroomMaskSelected;
     if (type == 4) return gemMaskSelected;
+    if (type == 6) return triMaskSelected;
 }
 
 void Inventory::makeMask(int type) {
     if (type == 1) woodMaskCrafted++;
     else if (type == 3) shroomMaskCrafted++;
     else if (type == 4) gemMaskCrafted++;
+    else if (type == 6) triMaskCrafted++;
 }
 
 bool Inventory::isMaskCrafted(int type) {
@@ -104,6 +114,7 @@ bool Inventory::isMaskCrafted(int type) {
     if (type == 1 && woodMaskCrafted >= 1) crafted = true;
     if (type == 3 && shroomMaskCrafted >= 1) crafted = true;
     if (type == 4 && gemMaskCrafted >= 1) crafted = true;
+    if (type == 6 && triMaskCrafted >= 1) crafted = true;
     return crafted;
 }
 
@@ -115,6 +126,7 @@ Sprite Inventory::getMaskSprite(int type) {
     if (type == 1) return woodMaskSprite;
     if (type == 3) return shroomMaskSprite;
     if (type == 4) return gemMaskSprite;
+    if (type == 6) return triMaskSprite;
 }
 
 Sprite Inventory::getSelectionSprite() {
@@ -133,18 +145,21 @@ void Inventory::setMaskPosition(Vector2f position) {
     woodMaskSprite.setPosition(position.x - 105, position.y - 112);
     shroomMaskSprite.setPosition(position.x + 110, position.y - 112);
     gemMaskSprite.setPosition(position.x - 105, position.y + 100);
+    triMaskSprite.setPosition(position.x + 112, position.y + 97);
 }
 
 std::string Inventory::getMaskText(int type) {
     if (type == 1) return woodMaskText;
     if (type == 3) return shroomMaskText;
     if (type == 4) return gemMaskText;
+    if (type == 6) return triMaskText;
 }
 
 int Inventory::getMaskCount(int type) {
     if (type == 1) return woodMaskCrafted;
     if (type == 3) return shroomMaskCrafted;
     if (type == 4) return gemMaskCrafted;
+    if (type == 6) return triMaskCrafted;
     return 0;
 }
 

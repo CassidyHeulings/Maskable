@@ -80,7 +80,7 @@ int main() {
     maskText.setFont(font);
     maskText.setFillColor(Color::White);
     maskText.setCharacterSize(35);
-    maskText.setPosition(910, 250);
+    maskText.setPosition(910, 140);
     // crafting HUD
     Text craftingText;
     craftingText.setFont(font);
@@ -146,6 +146,8 @@ int main() {
     bool wearShroomMask = false;
     bool gemMaskCrafted = false;
     bool wearGemMask = false;
+    bool triMaskCrafted = false;
+    bool wearTriMask = false;
 
     // TODO selection sprite
     // selected
@@ -174,7 +176,6 @@ int main() {
                 if (state == State::CRAFTING) {
                     if (event.mouseButton.button == Mouse::Left) {
                         // move sprite to outline the item
-                        // cycle through each item and click on specific one
                         if (inventory.getMaskCoords(1, mainView.getCenter()).contains(mouseWorldPos.x + 72, mouseWorldPos.y + 230)) {
                             inventory.setMaskSelected(true, 1);
                         }
@@ -187,6 +188,10 @@ int main() {
                             inventory.setMaskSelected(true, 4);
                         }
                         else inventory.setMaskSelected(false, 4);
+                        if (inventory.getMaskCoords(6, mainView.getCenter()).contains(mouseWorldPos.x + 72, mouseWorldPos.y + 230)) {
+                            inventory.setMaskSelected(true, 6);
+                        }
+                        else inventory.setMaskSelected(false, 6);
                     }
                 }
             }
@@ -249,6 +254,14 @@ int main() {
                                     }
                                     else gemMaskCrafted = false;
                                 }
+                                if (inventory.getMaskSelected(6)) { // tri mask recipe
+                                    if (inventory.getItemCount(1) >= 30
+                                        && inventory.getItemCount(3) >= 30
+                                        && inventory.getItemCount(4) >= 30) {
+                                        triMaskCrafted = true;
+                                    }
+                                    else triMaskCrafted = false;
+                                }
                                 break;
                             case Keyboard::Q:
                                 // wood mask
@@ -263,6 +276,10 @@ int main() {
                                 if (inventory.getMaskSelected(4) && !wearGemMask && inventory.isMaskCrafted(4)) wearGemMask = true;
                                 else if (inventory.getMaskSelected(4) && wearGemMask) wearGemMask = false;
                                 else wearGemMask = false;
+                                // tri mask
+                                if (inventory.getMaskSelected(6) && !wearTriMask && inventory.isMaskCrafted(6)) wearTriMask = true;
+                                else if (inventory.getMaskSelected(6) && wearTriMask) wearTriMask = false;
+                                else wearTriMask = false;
                                 break;
                         }
                         break;
@@ -352,12 +369,16 @@ int main() {
                 selectedSprite.setRotation(0);
             }
             else if (inventory.getMaskSelected(3)) {
-                selectedSprite.setPosition(mainView.getCenter());
+                selectedSprite.setPosition(mainView.getCenter().x + 1, mainView.getCenter().y - 7);
                 selectedSprite.setRotation(90);
             }
             else if (inventory.getMaskSelected(4)) {
-                selectedSprite.setPosition(mainView.getCenter());
+                selectedSprite.setPosition(mainView.getCenter().x + 5, mainView.getCenter().y - 2);
                 selectedSprite.setRotation(270);
+            }
+            else if (inventory.getMaskSelected(6)) {
+                selectedSprite.setPosition(mainView.getCenter().x + 6, mainView.getCenter().y - 18);
+                selectedSprite.setRotation(180);
             }
             else selectedSprite.setPosition(-1000, 1000);
 
@@ -377,6 +398,13 @@ int main() {
                 inventory.makeMask(4);
                 gemMaskCrafted = false;
             }
+            if (triMaskCrafted) {
+                inventory.setItemCount(1, 30);
+                inventory.setItemCount(3, 30);
+                inventory.setItemCount(4, 30);
+                inventory.makeMask(6);
+                triMaskCrafted = false;
+            }
 
             // check if mask is made to wear
             if (wearWoodMask && inventory.isMaskCrafted(1)) {
@@ -394,7 +422,11 @@ int main() {
             if (wearGemMask && inventory.isMaskCrafted(4)) {
                 player.toggleMask(true, 4);
             }
-            else player.toggleMask(false, 4);
+            else player.toggleMask(false, 6);
+            if (wearTriMask && inventory.isMaskCrafted(6)) {
+                player.toggleMask(true, 6);
+            }
+            else player.toggleMask(false, 6);
 
             // update HUD
             std::stringstream ssResource;
@@ -404,6 +436,7 @@ int main() {
             if (inventory.getMaskSelected(1)) ssMask << inventory.getMaskText(1) << "\nOwned: " << inventory.getMaskCount(1);
             else if (inventory.getMaskSelected(3)) ssMask << inventory.getMaskText(3) << "\nOwned: " << inventory.getMaskCount(3);
             else if (inventory.getMaskSelected(4)) ssMask << inventory.getMaskText(4) << "\nOwned: " << inventory.getMaskCount(4);
+            else if (inventory.getMaskSelected(6)) ssMask << inventory.getMaskText(6) << "\nOwned: " << inventory.getMaskCount(6);
             else ssMask << "";
             maskText.setString(ssMask.str());
         }
@@ -429,6 +462,7 @@ int main() {
                 window.draw(player.getMaskSprite(1));
                 window.draw(player.getMaskSprite(3));
                 window.draw(player.getMaskSprite(4));
+                window.draw(player.getMaskSprite(6));
                 // hud view
                 window.setView(hudView);
                 window.draw(resourceText);
@@ -446,6 +480,7 @@ int main() {
                 window.draw(player.getMaskSprite(1));
                 window.draw(player.getMaskSprite(3));
                 window.draw(player.getMaskSprite(4));
+                window.draw(player.getMaskSprite(6));
                 window.draw(dimOverlay);
                 window.setView(hudView);
                 window.draw(pausedText);
@@ -462,11 +497,13 @@ int main() {
                 window.draw(player.getMaskSprite(1));
                 window.draw(player.getMaskSprite(3));
                 window.draw(player.getMaskSprite(4));
+                window.draw(player.getMaskSprite(6));
                 window.draw(dimOverlay);
                 window.draw(inventory.getSprite());
                 window.draw(inventory.getMaskSprite(1));
                 window.draw(inventory.getMaskSprite(3));
                 window.draw(inventory.getMaskSprite(4));
+                window.draw(inventory.getMaskSprite(6));
                 window.draw(selectedSprite);
                 window.setView(hudView);
                 window.draw(craftingText);
