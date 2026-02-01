@@ -33,10 +33,15 @@ private:
     int shroomNum;
     bool shroomMaskSelected;
     int shroomMaskCrafted;
+    int gemNum;
+    bool gemMaskSelected;
+    int gemMaskCrafted;
     int maxHold; // max number for items
     sf::Sprite woodMaskSprite;
     sf::Sprite shroomMaskSprite;
+    sf::Sprite gemMaskSprite;
     sf::Sprite selectionSprite;
     std::string woodMaskText = "A wooden mask\nIncreases resource\ncollection by 1\n\nCost: 10 wood";
-    std::string shroomMaskText = "A mushroom mask\nIncreases player\nspeed by 10%\n\nCost: 10 mushrooms";
+    std::string shroomMaskText = "A mushroom mask\nIncreases player\nspeed by 20%\n\nCost: 10 mushrooms";
+    std::string gemMaskText = "A gem mask\nIncreases resource\ncollection speed\n by 50%\n\nCost: 15 gems";
 };

@@ -28,6 +28,10 @@ Player::Player()
     shroomMask.setOrigin(34,75);
     shroomMaskOn = false;
 
+    gemMask = Sprite(TextureHolder::GetTexture("../Graphics/WoodMaskFront.png"));
+    gemMask.setOrigin(34,75);
+    gemMaskOn = false;
+
     interRight = false;
     interLeft = false;
     interDown = false;
@@ -51,11 +55,6 @@ void Player::spawn(IntRect worldSize, Vector2f res, int sizeTile, std::vector<Fl
     // store interactable positions
     interactablePositions = interactablePos;
 }
-// reset stats at end of every game
-void Player::resetPlayerStats() {
-    speed = START_SPEED;
-}
-
 // players current position
 FloatRect Player::getPosition() {
     return sprite.getGlobalBounds();
@@ -76,15 +75,17 @@ Sprite Player::getSprite() {
 Sprite Player::getMaskSprite(int type) {
     if (type == 1) return woodMask;
     if (type == 3) return shroomMask;
+    if (type == 4) return gemMask;
 }
 
 void Player::toggleMask(bool on, int type) {
     if (type == 1) woodMaskOn = on;
     if (type == 3) shroomMaskOn = on;
+    if (type == 4) gemMaskOn = on;
 }
 
 void Player::setSpeed(bool maskOn) {
-    if (maskOn) speed = START_SPEED * 5;
+    if (maskOn) speed = START_SPEED * 1.2;
     else speed = START_SPEED;
 }
 
@@ -125,19 +126,25 @@ void Player::update(float dt) {
         position.x -= speed * dt;
         sprite.setTexture(TextureHolder::GetTexture(textureList[3]));
         lastFacing = -1;
+        // masks
         if (woodMaskOn) woodMask.setPosition(position.x - 6, position.y + 1);
         else woodMask.setPosition(-1000, -1000);
         if (shroomMaskOn) shroomMask.setPosition(position.x - 6, position.y + 1);
         else shroomMask.setPosition(-1000, -1000);
+        if (gemMaskOn) gemMask.setPosition(position.x - 6, position.y + 1);
+        else gemMask.setPosition(-1000, -1000);
     }
     if (rightPressed && !interRight) {
         position.x += speed * dt;
         sprite.setTexture(TextureHolder::GetTexture(textureList[2]));
         lastFacing = -2;
+        // masks
         if (woodMaskOn) woodMask.setPosition(position.x + 5, position.y + 1);
         else woodMask.setPosition(-1000, -1000);
         if (shroomMaskOn) shroomMask.setPosition(position.x + 5, position.y + 1);
         else shroomMask.setPosition(-1000, -1000);
+        if (gemMaskOn) gemMask.setPosition(position.x + 5, position.y + 1);
+        else gemMask.setPosition(-1000, -1000);
     }
     if (upPressed && !interUp) {
         position.y -= speed * dt;
@@ -145,8 +152,10 @@ void Player::update(float dt) {
         if (!(leftPressed || rightPressed)) {
             sprite.setTexture(TextureHolder::GetTexture(textureList[1]));
             lastFacing = 1;
+            // masks
             woodMask.setPosition(-1000, -1000);
             shroomMask.setPosition(-1000, -1000);
+            gemMask.setPosition(-1000, -1000);
         }
     }
     if (downPressed && !interDown) {
@@ -155,10 +164,13 @@ void Player::update(float dt) {
         if (!(leftPressed || rightPressed)) {
             sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
             lastFacing = 2;
+            // masks
             if (woodMaskOn) woodMask.setPosition(position.x, position.y);
             else woodMask.setPosition(-1000, -1000);
             if (shroomMaskOn) shroomMask.setPosition(position.x, position.y);
             else shroomMask.setPosition(-1000, -1000);
+            if (gemMaskOn) gemMask.setPosition(position.x, position.y);
+            else gemMask.setPosition(-1000, -1000);
         }
     }
 
@@ -167,18 +179,24 @@ void Player::update(float dt) {
         // facing left
         if (lastFacing == -1) {
             sprite.setTexture(TextureHolder::GetTexture(textureList[3]));
+            // masks
             if (woodMaskOn) woodMask.setPosition(position.x - 6, position.y + 1);
             else woodMask.setPosition(-1000, -1000);
             if (shroomMaskOn) shroomMask.setPosition(position.x - 6, position.y + 1);
             else shroomMask.setPosition(-1000, -1000);
+            if (gemMaskOn) gemMask.setPosition(position.x - 6, position.y + 1);
+            else gemMask.setPosition(-1000, -1000);
         }
         // facing right
         else if (lastFacing == -2) {
             sprite.setTexture(TextureHolder::GetTexture(textureList[2]));
+            // masks
             if (woodMaskOn) woodMask.setPosition(position.x + 5, position.y + 1);
             else woodMask.setPosition(-1000, -1000);
             if (shroomMaskOn) shroomMask.setPosition(position.x + 5, position.y + 1);
             else shroomMask.setPosition(-1000, -1000);
+            if (gemMaskOn) gemMask.setPosition(position.x + 5, position.y + 1);
+            else gemMask.setPosition(-1000, -1000);
         }
         // facing up
         else if (lastFacing == 1) {
@@ -187,10 +205,13 @@ void Player::update(float dt) {
         // facing down
         else if (lastFacing == 2) {
             sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
+            // masks
             if (woodMaskOn) woodMask.setPosition(position.x, position.y);
             else woodMask.setPosition(-1000, -1000);
             if (shroomMaskOn) shroomMask.setPosition(position.x, position.y);
             else shroomMask.setPosition(-1000, -1000);
+            if (gemMaskOn) gemMask.setPosition(position.x, position.y);
+            else gemMask.setPosition(-1000, -1000);
         }
 
     }

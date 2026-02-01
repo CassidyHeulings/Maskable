@@ -8,7 +8,6 @@ class Player {
 public:
     Player();
     void spawn(sf::IntRect worldSize, sf::Vector2f res, int sizeTile, std::vector<sf::FloatRect> interactablePos);
-    void resetPlayerStats(); // call at the end of every game
     sf::FloatRect getPosition(); // players position
     sf::Vector2f getCenter(); // center of player
     int getDirection(); // direction player is facing
@@ -55,5 +54,7 @@ private:
     bool woodMaskOn;
     sf::Sprite shroomMask;
     bool shroomMaskOn;
+    sf::Sprite gemMask;
+    bool gemMaskOn;
     std::vector<sf::FloatRect> interactablePositions;
 };

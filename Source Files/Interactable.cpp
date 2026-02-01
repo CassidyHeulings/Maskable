@@ -9,7 +9,7 @@ using namespace std;
 
 Interactable::Interactable(int type, FloatRect biomeCoords, int num) : intType{type} {
     timeSinceCollect = 3;
-    timeToCollect = 2;
+    timeToCollect = BASE_COLLECT_SPEED;
     int x, y;
     if (num == 1) {
         x = biomeCoords.left + biomeCoords.width / 5;
@@ -32,12 +32,21 @@ Interactable::Interactable(int type, FloatRect biomeCoords, int num) : intType{t
         sprite = Sprite(TextureHolder::GetTexture("../Graphics/Mushroom.png"));
         intType = 3;
     }
+    else if (type == 4) {
+        sprite = Sprite(TextureHolder::GetTexture("../Graphics/Tree.png"));
+        intType = 4;
+    }
     sprite.setOrigin(128, 128);
     sprite.setPosition(x, y);
 }
 
 Vector2f Interactable::getPosition() {
     return position;
+}
+
+void Interactable::increaseCollectSpeed(bool wearingMask) {
+    if (wearingMask) timeToCollect = BASE_COLLECT_SPEED * .5;
+    else timeToCollect = BASE_COLLECT_SPEED;
 }
 
 int Interactable::interact(bool wearingMask) {
