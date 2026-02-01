@@ -17,7 +17,7 @@ public:
     void makeMask(int type);
     bool isMaskCrafted(int type);
     sf::Sprite getSprite();
-    sf::Sprite getMaskSprite();
+    sf::Sprite getMaskSprite(int type);
     sf::Sprite getSelectionSprite();
     void setInvPosition(sf::Vector2f position);
     void setSelectionPosition(sf::Vector2f position);
@@ -30,8 +30,13 @@ private:
     int woodNum;
     bool woodMaskSelected;
     int woodMaskCrafted;
+    int shroomNum;
+    bool shroomMaskSelected;
+    int shroomMaskCrafted;
     int maxHold; // max number for items
     sf::Sprite woodMaskSprite;
+    sf::Sprite shroomMaskSprite;
     sf::Sprite selectionSprite;
     std::string woodMaskText = "A wooden mask\nIncreases resource\ncollection by 1\n\nCost: 10 wood";
+    std::string shroomMaskText = "A mushroom mask\nIncreases player\nspeed by 10%\n\nCost: 10 mushrooms";
 };

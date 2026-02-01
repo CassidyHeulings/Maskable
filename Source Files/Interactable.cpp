@@ -12,21 +12,25 @@ Interactable::Interactable(int type, FloatRect biomeCoords, int num) : intType{t
     timeToCollect = 2;
     int x, y;
     if (num == 1) {
-        x = (biomeCoords.left + biomeCoords.width) / 3;
-        y = (biomeCoords.top + biomeCoords.height) / 3 * 2;
+        x = biomeCoords.left + biomeCoords.width / 5;
+        y = biomeCoords.top + biomeCoords.height / 5;
+    }
+    else if (num == 2) {
+        x = biomeCoords.left + biomeCoords.width / 5 * 4;
+        y = biomeCoords.top + biomeCoords.height / 3;
     }
     else {
-        x = (biomeCoords.left + biomeCoords.width) / 3 * 2;
-        y = (biomeCoords.top + biomeCoords.height) / 3;
+        x = biomeCoords.left + biomeCoords.width / 5 * 2;
+        y = biomeCoords.top + biomeCoords.height / 4 * 3;
     }
     // set texture, type, position of interactable
     if (type == 1) {
         sprite = Sprite(TextureHolder::GetTexture("../Graphics/Tree.png"));
         intType = 1;
     }
-    else if (type == 2) {
-        sprite = Sprite(TextureHolder::GetTexture("../Graphics/PlayerBack.png"));
-        intType = 2;
+    else if (type == 3) {
+        sprite = Sprite(TextureHolder::GetTexture("../Graphics/Mushroom.png"));
+        intType = 3;
     }
     sprite.setOrigin(128, 128);
     sprite.setPosition(x, y);

@@ -9,13 +9,18 @@ using namespace sf;
 
 Inventory::Inventory() {
     woodNum = 0;
+    shroomNum = 0;
     maxHold = 300;
     woodMaskSelected = false;
     woodMaskCrafted = 0;
+    shroomMaskSelected = false;
+    shroomMaskCrafted = 0;
     inventorySprite.setTexture(TextureHolder::GetTexture("../Graphics/Inventory.png"));
     inventorySprite.setOrigin(256, 256);
     woodMaskSprite.setTexture(TextureHolder::GetTexture("../Graphics/WoodMask.png"));
     woodMaskSprite.setOrigin(70, 75);
+    shroomMaskSprite.setTexture(TextureHolder::GetTexture("../Graphics/WoodMask.png"));
+    shroomMaskSprite.setOrigin(70, 75);
     selectionSprite.setTexture(TextureHolder::GetTexture("../Graphics/Selection.png"));
     selectionSprite.setOrigin(256, 256);
 }
@@ -25,14 +30,16 @@ void Inventory::collect(int type, int amount) {
         woodNum += amount;
         if (woodNum > maxHold) woodNum = maxHold;
     }
+    else if (type == 3 && shroomNum < maxHold) {
+        shroomNum += amount;
+        if (shroomNum > maxHold) shroomNum = maxHold;
+    }
 }
 
 int Inventory::getItemCount(int type) {
-    if (type == 1) {
-        return woodNum;
-    }
-    else
-        return 0;
+    if (type == 1) return woodNum;
+    if (type == 3) return shroomNum;
+    return 0;
 }
 
 void Inventory::setItemCount(int type, int amount) {
@@ -40,37 +47,40 @@ void Inventory::setItemCount(int type, int amount) {
         woodNum -= amount;
         if (woodNum < 0) woodNum = 0;
     }
+    if (type == 3) {
+        shroomNum -= amount;
+        if (shroomNum < 0) shroomNum = 0;
+    }
 }
 
 IntRect Inventory::getMaskCoords(int type, Vector2f centerView) {
     if (type == 1) { // wood mask
         return IntRect(centerView.x - 105, centerView.y + 45, 135,135);
     }
+    if (type == 3) { // shroom mask
+        return IntRect(centerView.x + 110, centerView.y + 45, 135,135);
+    }
 }
 
 void Inventory::setMaskSelected(bool selected, int type) {
-    if (type == 1) { // wood mask
-        woodMaskSelected = selected;
-    }
+    if (type == 1) woodMaskSelected = selected;
+    else if (type == 3) shroomMaskSelected = selected;
 }
 
 bool Inventory::getMaskSelected(int type) {
-    if (type == 1) { // wood mask
-        return woodMaskSelected;
-    }
+    if (type == 1) return woodMaskSelected;
+    if (type == 3) return shroomMaskSelected;
 }
 
 void Inventory::makeMask(int type) {
-    if (type == 1) {
-        woodMaskCrafted++;
-    }
+    if (type == 1) woodMaskCrafted++;
+    else if (type == 3) shroomMaskCrafted++;
 }
 
 bool Inventory::isMaskCrafted(int type) {
     bool crafted = false;
-    if (type == 1) {
-        if (woodMaskCrafted >= 1) crafted = true;
-    }
+    if (type == 1 && woodMaskCrafted >= 1) crafted = true;
+    if (type == 3 && shroomMaskCrafted >= 1) crafted = true;
     return crafted;
 }
 
@@ -78,8 +88,9 @@ Sprite Inventory::getSprite() {
     return inventorySprite;
 }
 
-Sprite Inventory::getMaskSprite() {
-    return woodMaskSprite;
+Sprite Inventory::getMaskSprite(int type) {
+    if (type == 1) return woodMaskSprite;
+    if (type == 3) return shroomMaskSprite;
 }
 
 Sprite Inventory::getSelectionSprite() {
@@ -95,19 +106,18 @@ void Inventory::setSelectionPosition(Vector2f position) {
 }
 
 void Inventory::setMaskPosition(Vector2f position) {
-    woodMaskSprite.setPosition(position);
+    woodMaskSprite.setPosition(position.x - 105, position.y - 112);
+    shroomMaskSprite.setPosition(position.x + 110, position.y - 112);
 }
 
 std::string Inventory::getMaskText(int type) {
-    if (type == 1) {
-        return woodMaskText;
-    }
+    if (type == 1) return woodMaskText;
+    if (type == 3) return shroomMaskText;
 }
 
 int Inventory::getMaskCount(int type) {
-    if (type == 1) {
-        return woodMaskCrafted;
-    }
+    if (type == 1) return woodMaskCrafted;
+    if (type == 3) return shroomMaskCrafted;
     return 0;
 }
 

@@ -2,9 +2,7 @@
 // Created by Cassidy Heulings on 1/29/26.
 //
 #include "../Header Files/Player.hpp"
-
 #include <iostream>
-
 #include "../Header Files/TextureHolder.hpp"
 #include "../Header Files/World.hpp"
 using namespace sf;
@@ -25,6 +23,10 @@ Player::Player()
     woodMask = Sprite(TextureHolder::GetTexture("../Graphics/WoodMaskFront.png"));
     woodMask.setOrigin(34,75);
     woodMaskOn = false;
+
+    shroomMask = Sprite(TextureHolder::GetTexture("../Graphics/WoodMaskFront.png"));
+    shroomMask.setOrigin(34,75);
+    shroomMaskOn = false;
 
     interRight = false;
     interLeft = false;
@@ -71,12 +73,19 @@ Sprite Player::getSprite() {
     return sprite;
 }
 
-Sprite Player::getWoodMaskSprite() {
-    return woodMask;
+Sprite Player::getMaskSprite(int type) {
+    if (type == 1) return woodMask;
+    if (type == 3) return shroomMask;
 }
 
-void Player::toggleWoodMask(bool on) {
-    woodMaskOn = on;
+void Player::toggleMask(bool on, int type) {
+    if (type == 1) woodMaskOn = on;
+    if (type == 3) shroomMaskOn = on;
+}
+
+void Player::setSpeed(bool maskOn) {
+    if (maskOn) speed = START_SPEED * 5;
+    else speed = START_SPEED;
 }
 
 // player movement
@@ -118,6 +127,8 @@ void Player::update(float dt) {
         lastFacing = -1;
         if (woodMaskOn) woodMask.setPosition(position.x - 6, position.y + 1);
         else woodMask.setPosition(-1000, -1000);
+        if (shroomMaskOn) shroomMask.setPosition(position.x - 6, position.y + 1);
+        else shroomMask.setPosition(-1000, -1000);
     }
     if (rightPressed && !interRight) {
         position.x += speed * dt;
@@ -125,6 +136,8 @@ void Player::update(float dt) {
         lastFacing = -2;
         if (woodMaskOn) woodMask.setPosition(position.x + 5, position.y + 1);
         else woodMask.setPosition(-1000, -1000);
+        if (shroomMaskOn) shroomMask.setPosition(position.x + 5, position.y + 1);
+        else shroomMask.setPosition(-1000, -1000);
     }
     if (upPressed && !interUp) {
         position.y -= speed * dt;
@@ -133,6 +146,7 @@ void Player::update(float dt) {
             sprite.setTexture(TextureHolder::GetTexture(textureList[1]));
             lastFacing = 1;
             woodMask.setPosition(-1000, -1000);
+            shroomMask.setPosition(-1000, -1000);
         }
     }
     if (downPressed && !interDown) {
@@ -143,6 +157,8 @@ void Player::update(float dt) {
             lastFacing = 2;
             if (woodMaskOn) woodMask.setPosition(position.x, position.y);
             else woodMask.setPosition(-1000, -1000);
+            if (shroomMaskOn) shroomMask.setPosition(position.x, position.y);
+            else shroomMask.setPosition(-1000, -1000);
         }
     }
 
@@ -153,12 +169,16 @@ void Player::update(float dt) {
             sprite.setTexture(TextureHolder::GetTexture(textureList[3]));
             if (woodMaskOn) woodMask.setPosition(position.x - 6, position.y + 1);
             else woodMask.setPosition(-1000, -1000);
+            if (shroomMaskOn) shroomMask.setPosition(position.x - 6, position.y + 1);
+            else shroomMask.setPosition(-1000, -1000);
         }
         // facing right
         else if (lastFacing == -2) {
             sprite.setTexture(TextureHolder::GetTexture(textureList[2]));
             if (woodMaskOn) woodMask.setPosition(position.x + 5, position.y + 1);
             else woodMask.setPosition(-1000, -1000);
+            if (shroomMaskOn) shroomMask.setPosition(position.x + 5, position.y + 1);
+            else shroomMask.setPosition(-1000, -1000);
         }
         // facing up
         else if (lastFacing == 1) {
@@ -169,6 +189,8 @@ void Player::update(float dt) {
             sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
             if (woodMaskOn) woodMask.setPosition(position.x, position.y);
             else woodMask.setPosition(-1000, -1000);
+            if (shroomMaskOn) shroomMask.setPosition(position.x, position.y);
+            else shroomMask.setPosition(-1000, -1000);
         }
 
     }

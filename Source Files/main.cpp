@@ -24,7 +24,6 @@ int main() {
     // initializing screen/world vars
     // add instance of texture holder
     TextureHolder holder;
-    // TODO decide game states
     enum class State { PAUSED, CRAFTING, NEW_GAME, PLAYING };
     State state = State::NEW_GAME; // start game in paused state
 
@@ -65,17 +64,17 @@ int main() {
     newGameText.setPosition(80, 80);
     newGameText.setString("How to play Maskable:\n\n   1. Collect resources from the land\n\n      using < enter >\n\n   2. Craft masks using < e >\n\nPress < enter > to start!");
     // wood count crafting
-    Text woodCraftingText;
-    woodCraftingText.setFont(font);
-    woodCraftingText.setCharacterSize(55);
-    woodCraftingText.setFillColor(Color::White);
-    woodCraftingText.setPosition(100, 250);
+    Text resourceCraftingText;
+    resourceCraftingText.setFont(font);
+    resourceCraftingText.setCharacterSize(55);
+    resourceCraftingText.setFillColor(Color::White);
+    resourceCraftingText.setPosition(100, 250);
     // wood count
-    Text woodText;
-    woodText.setFont(font);
-    woodText.setCharacterSize(55);
-    woodText.setFillColor(Color::White);
-    woodText.setPosition(20, 0);
+    Text resourceText;
+    resourceText.setFont(font);
+    resourceText.setCharacterSize(55);
+    resourceText.setFillColor(Color::White);
+    resourceText.setPosition(20, 0);
     // mask text
     Text maskText;
     maskText.setFont(font);
@@ -117,6 +116,14 @@ int main() {
     interactableList.push_back(tree1);
     Interactable tree2(1, getBiomeRect(1), 2);
     interactableList.push_back(tree2);
+    Interactable tree3(1, getBiomeRect(1), 3);
+    interactableList.push_back(tree3);
+    Interactable shroom1(3, getBiomeRect(3), 1);
+    interactableList.push_back(shroom1);
+    Interactable shroom2(3, getBiomeRect(3), 2);
+    interactableList.push_back(shroom2);
+    Interactable shroom3(3, getBiomeRect(3), 3);
+    interactableList.push_back(shroom3);
     bool interacting = false;
     // store positions
     std::vector<FloatRect> interactablePositions;
@@ -127,9 +134,12 @@ int main() {
 
     // create inventory
     Inventory inventory = Inventory();
-    bool maskCrafted = false;
+    bool woodMaskCrafted = false;
     bool wearWoodMask = false;
+    bool shroomMaskCrafted = false;
+    bool wearShroomMask = false;
 
+    // TODO selection sprite
     // selected
     Sprite selectedSprite;
     selectedSprite.setTexture(TextureHolder::GetTexture("../Graphics/Selection.png"));
@@ -161,6 +171,10 @@ int main() {
                             inventory.setMaskSelected(true, 1);
                         }
                         else inventory.setMaskSelected(false, 1);
+                        if (inventory.getMaskCoords(3, mainView.getCenter()).contains(mouseWorldPos.x + 72, mouseWorldPos.y + 230)) {
+                            inventory.setMaskSelected(true, 3);
+                        }
+                        else inventory.setMaskSelected(false, 3);
                     }
                 }
             }
@@ -207,15 +221,26 @@ int main() {
                                 // craft and add to inventory
                                 if (inventory.getMaskSelected(1)) {
                                     if (inventory.getItemCount(1) >= 10) { // wood mask recipe
-                                        maskCrafted = true;
+                                        woodMaskCrafted = true;
                                     }
-                                    else maskCrafted = false;
+                                    else woodMaskCrafted = false;
+                                }
+                                if (inventory.getMaskSelected(3)) {
+                                    if (inventory.getItemCount(3) >= 10) { // shroom mask recipe
+                                        shroomMaskCrafted = true;
+                                    }
+                                    else shroomMaskCrafted = false;
                                 }
                                 break;
                             case Keyboard::Q:
-                                if (inventory.getMaskSelected(1) && !wearWoodMask) wearWoodMask = true;
+                                // wood mask
+                                if (inventory.getMaskSelected(1) && !wearWoodMask && inventory.isMaskCrafted(1)) wearWoodMask = true;
                                 else if (inventory.getMaskSelected(1) && wearWoodMask) wearWoodMask = false;
                                 else wearWoodMask = false;
+                                // shroom mask
+                                if (inventory.getMaskSelected(3) && !wearShroomMask && inventory.isMaskCrafted(3)) wearShroomMask = true;
+                                else if (inventory.getMaskSelected(3) && wearShroomMask) wearShroomMask = false;
+                                else wearShroomMask = false;
                                 break;
                         }
                         break;
@@ -247,9 +272,9 @@ int main() {
             // re-calculate every fpsMeasurementFrameInterval frames
             if (framesSinceLastHUDUpdate > fpsFrameInterval) {
                 // update HUD text
-                std::stringstream ssWood;
-                ssWood << "Wood: " << inventory.getItemCount(1) << "/300";
-                woodText.setString(ssWood.str());
+                std::stringstream ssResource;
+                ssResource << "Wood: " << inventory.getItemCount(1) << "/300" << "  Mushrooms: " << inventory.getItemCount(3) << "/300";
+                resourceText.setString(ssResource.str());
                 framesSinceLastHUDUpdate = 0;
             }
 
@@ -297,32 +322,52 @@ int main() {
                 Mouse::getPosition(window), mainView); // convert to world coords of mainView
             inventory.setInvPosition(mainView.getCenter());
             spriteMouse.setPosition(mouseWorldPos);
-            inventory.setMaskPosition(Vector2f(mainView.getCenter().x - 105, mainView.getCenter().y - 112));
+            inventory.setMaskPosition(Vector2f(mainView.getCenter()));
 
             if (inventory.getMaskSelected(1)) {
                 selectedSprite.setPosition(mainView.getCenter());
+                selectedSprite.setRotation(0);
+            }
+            else if (inventory.getMaskSelected(3)) {
+                selectedSprite.setPosition(mainView.getCenter());
+                selectedSprite.setRotation(90);
             }
             else selectedSprite.setPosition(-1000, -1000);
 
             // make the mask
-            if (maskCrafted) {
+            if (woodMaskCrafted) {
                 inventory.setItemCount(1, 10);
                 inventory.makeMask(1);
-                maskCrafted = false;
+                woodMaskCrafted = false;
             }
+            if (shroomMaskCrafted) {
+                inventory.setItemCount(3, 10);
+                inventory.makeMask(3);
+                shroomMaskCrafted = false;
+            }
+
             // check if mask is made to wear
             if (wearWoodMask && inventory.isMaskCrafted(1)) {
                 // maskToggle
-                player.toggleWoodMask(true);
+                player.toggleMask(true, 1);
             }
-            else player.toggleWoodMask(false);
+            else player.toggleMask(false, 1);
+            if (wearShroomMask && inventory.isMaskCrafted(3)) {
+                player.toggleMask(true, 3);
+                player.setSpeed(true);
+            }
+            else {
+                player.toggleMask(false, 3);
+                player.setSpeed(false);
+            }
 
             // update HUD
-            std::stringstream ssWoodCraft;
-            ssWoodCraft << "Wood: " << inventory.getItemCount(1);
-            woodCraftingText.setString(ssWoodCraft.str());
+            std::stringstream ssResource;
+            ssResource << "Wood: " << inventory.getItemCount(1) << "/300" << "\n\nMushrooms: " << inventory.getItemCount(3) << "/300";
+            resourceText.setString(ssResource.str());
             std::stringstream ssMask;
             if (inventory.getMaskSelected(1)) ssMask << inventory.getMaskText(1) << "\nOwned: " << inventory.getMaskCount(1);
+            else if (inventory.getMaskSelected(3)) ssMask << inventory.getMaskText(3) << "\nOwned: " << inventory.getMaskCount(3);
             else ssMask << "";
             maskText.setString(ssMask.str());
         }
@@ -345,11 +390,11 @@ int main() {
                     window.draw(interactableItem.getSprite());
                 }
                 window.draw(player.getSprite()); // draw player
-                window.draw(player.getWoodMaskSprite());
-                window.draw(player.getWoodMaskSprite());
+                window.draw(player.getMaskSprite(1));
+                window.draw(player.getMaskSprite(3));
                 // hud view
                 window.setView(hudView);
-                window.draw(woodText);
+                window.draw(resourceText);
                 break;
             case State::PAUSED:
                 window.clear();
@@ -361,7 +406,8 @@ int main() {
                     window.draw(interactableItem.getSprite());
                 }
                 window.draw(player.getSprite()); // draw player
-                window.draw(player.getWoodMaskSprite());
+                window.draw(player.getMaskSprite(1));
+                window.draw(player.getMaskSprite(3));
                 window.draw(dimOverlay);
                 window.setView(hudView);
                 window.draw(pausedText);
@@ -375,15 +421,17 @@ int main() {
                     window.draw(interactableItem.getSprite());
                 }
                 window.draw(player.getSprite()); // draw player
-                window.draw(player.getWoodMaskSprite());
+                window.draw(player.getMaskSprite(1));
+                window.draw(player.getMaskSprite(3));
                 window.draw(dimOverlay);
                 window.draw(inventory.getSprite());
-                window.draw(inventory.getMaskSprite());
+                window.draw(inventory.getMaskSprite(1));
+                window.draw(inventory.getMaskSprite(3));
                 window.draw(selectedSprite);
                 window.setView(hudView);
                 window.draw(craftingText);
                 window.draw(craftingText2);
-                window.draw(woodCraftingText);
+                window.draw(resourceCraftingText);
                 window.draw(maskText);
                 window.setView(mainView);
                 window.draw(spriteMouse);

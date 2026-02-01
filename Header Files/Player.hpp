@@ -13,8 +13,9 @@ public:
     sf::Vector2f getCenter(); // center of player
     int getDirection(); // direction player is facing
     sf::Sprite getSprite(); // send copy of sprite to main function
-    sf::Sprite getWoodMaskSprite();
-    void toggleWoodMask(bool on);
+    sf::Sprite getMaskSprite(int type);
+    void toggleMask(bool on, int type);
+    void setSpeed(bool maskOn);
     // player movement
     void moveLeft();
     void moveRight();
@@ -52,5 +53,7 @@ private:
     float speed;
     sf::Sprite woodMask;
     bool woodMaskOn;
+    sf::Sprite shroomMask;
+    bool shroomMaskOn;
     std::vector<sf::FloatRect> interactablePositions;
 };
