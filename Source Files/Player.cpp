@@ -181,13 +181,27 @@ void Player::update(float dt) {
     // if player is stopped, fix texture
     if (!(leftPressed && rightPressed && upPressed && downPressed)) {
         // facing left
-        if (lastFacing == -1) sprite.setTexture(TextureHolder::GetTexture(textureList[3]));
+        if (lastFacing == -1) {
+            sprite.setTexture(TextureHolder::GetTexture(textureList[3]));
+            if (woodMaskOn) woodMask.setPosition(position.x - 6, position.y + 1);
+            else woodMask.setPosition(-1000, -1000);
+        }
         // facing right
-        else if (lastFacing == -2) sprite.setTexture(TextureHolder::GetTexture(textureList[2]));
+        else if (lastFacing == -2) {
+            sprite.setTexture(TextureHolder::GetTexture(textureList[2]));
+            if (woodMaskOn) woodMask.setPosition(position.x + 5, position.y + 1);
+            else woodMask.setPosition(-1000, -1000);
+        }
         // facing up
-        else if (lastFacing == 1) sprite.setTexture(TextureHolder::GetTexture(textureList[1]));
+        else if (lastFacing == 1) {
+            sprite.setTexture(TextureHolder::GetTexture(textureList[1]));
+        }
         // facing down
-        else if (lastFacing == 2) sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
+        else if (lastFacing == 2) {
+            sprite.setTexture(TextureHolder::GetTexture(textureList[0]));
+            if (woodMaskOn) woodMask.setPosition(position.x, position.y);
+            else woodMask.setPosition(-1000, -1000);
+        }
 
     }
 

@@ -93,6 +93,7 @@ int main() {
     // create inventory
     Inventory inventory = Inventory();
     bool maskCrafted = false;
+    bool wearWoodMask = false;
 
     // selected
     Sprite selectedSprite;
@@ -178,6 +179,11 @@ int main() {
                                     }
                                     else maskCrafted = false;
                                 }
+                                break;
+                            case Keyboard::Q:
+                                if (inventory.getMaskSelected(1) && !wearWoodMask) wearWoodMask = true;
+                                else if (inventory.getMaskSelected(1) && wearWoodMask) wearWoodMask = false;
+                                else wearWoodMask = false;
                                 break;
                         }
                         break;
@@ -300,16 +306,17 @@ int main() {
             }
             else selectedSprite.setPosition(-1000, -1000);
 
+            // make the mask
             if (maskCrafted) {
-                // make the mask
                 inventory.makeMask(1);
                 inventory.setItemCount(1, 10);
             }
-            // check if mask is made
-            if (inventory.isMaskCrafted(1)) {
+            // check if mask is made to wear
+            if (wearWoodMask && inventory.isMaskCrafted(1)) {
                 // maskToggle
                 player.toggleWoodMask(true);
             }
+            else player.toggleWoodMask(false);
         }
 
         /*
