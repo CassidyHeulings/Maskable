@@ -19,6 +19,8 @@ using namespace sf;
  * Water -> 5
 */
 
+//TODO sprite.setPosition for inventory items
+
 int main() {
     // initializing screen/world vars
     // add instance of texture holder
@@ -64,6 +66,17 @@ int main() {
     // create inventory
     Inventory inventory = Inventory();
 
+    // selected
+    Sprite selectedSprite;
+
+    //TODO draw mouse
+    // player crosshair creation
+    window.setMouseCursorVisible(false); // hide mouse pointer
+    Sprite spriteMouse;
+    Texture textureMouse = TextureHolder::GetTexture("../Graphics/Mouse.png");
+    spriteMouse.setTexture(textureMouse);
+    spriteMouse.setOrigin(25, 25);
+
     // game loop
     while (window.isOpen()) {
 
@@ -106,12 +119,35 @@ int main() {
                             case Keyboard::Enter:
                                 interacting = true;
                                 break;
-                            case Keyboard::Delete:
-                                window.close();
+                            case Keyboard::E:
+                                state = State::CRAFTING;
                                 break;
                             }
                             break;
                     case State::CRAFTING:
+                        switch (event.key.code) {
+                            case Keyboard::Escape:
+                                state = State::PLAYING;
+                                break;
+                            case Mouse::Left:
+                                // move sprite to outline the item
+                                // cycle through each item and click on specific one
+                                if (inventory.getMaskCoords(1, player.getCenter()).contains(mouseWorldPos.x, mouseWorldPos.y)) {
+                                    selectedSprite.setPosition(mainView.getCenter());
+                                }
+                                else selectedSprite.setPosition(-1000, -1000);
+                            case Keyboard::Enter:
+                                // cycle through each mask
+                                // check have the items available
+                                // craft and add to inventory
+                                if (inventory.getMaskSelected(1)) {
+                                    if (inventory.getItemCount(50)) { // wood mask recipe
+                                        inventory.makeMask(1);
+                                    }
+                                }
+                                break;
+                        }
+                        break;
                     case State::JOURNAL:
                         if (event.key.code == Keyboard::Escape) {
                             state = State::PLAYING;
@@ -172,6 +208,9 @@ int main() {
                 interacting = false;
             }
 
+            if (inventory.isMaskCrafted(1))
+                inventory.setMaskPosition(player.getCenter());
+
             // TODO change interactable width and height
             // stop player from walking into interactable
 
@@ -202,14 +241,14 @@ int main() {
 
         } // end update state playing
 
-        // TODO mouse coords in menus?
-        /**
         if (state == State::CRAFTING) {
             // check mouse pointer
             mouseWorldPos = window.mapPixelToCoords(
                 Mouse::getPosition(window), mainView); // convert to world coords of mainView
+            inventory.setInvPosition(mainView.getCenter());
+            spriteMouse.setPosition(mouseWorldPos);
+            inventory.setMaskPosition(Vector2f(mainView.getCenter().x - 105, mainView.getCenter().y - 112));
         }
-        */
 
         /*
         ****************
@@ -226,6 +265,9 @@ int main() {
                 window.draw(background, &backgroundTexture); // draw background
                 window.draw(tree.getSprite());
                 window.draw(player.getSprite()); // draw player
+                if (inventory.isMaskCrafted(1)) {
+                    window.draw(inventory.getMaskSprite());
+                }
                 break;
             case State::JOURNAL:
                 break;
@@ -239,6 +281,16 @@ int main() {
                 window.draw(dimOverlay);
                 break;
             case State::CRAFTING:
+                window.clear();
+                window.setView(mainView);
+                window.draw(background, &backgroundTexture); // draw background
+                window.draw(tree.getSprite());
+                window.draw(player.getSprite()); // draw player
+                window.draw(dimOverlay);
+                window.draw(inventory.getSprite());
+                window.draw(inventory.getMaskSprite());
+                window.draw(selectedSprite);
+                window.draw(spriteMouse);
                 break;
             case State::NEW_GAME:
                 window.clear();

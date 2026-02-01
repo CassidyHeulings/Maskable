@@ -37,7 +37,7 @@ int Interactable::interact() {
         timeSinceCollect = 0;
         // collect random number of items to inventory
         srand((int)time(0) / timeSinceCollect);
-        return rand() % 3 + 1;
+        return rand() % 10 + 5;
     }
     else return 0;
 }
