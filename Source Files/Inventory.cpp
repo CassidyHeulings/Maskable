@@ -38,6 +38,7 @@ int Inventory::getItemCount(int type) {
 
 IntRect Inventory::getMaskCoords(int type, Vector2f centerView) {
     if (type == 1) { // wood mask
+        std::cout << "Mask coords: " << centerView.x - 100 << " " << centerView.y + 50 << " 100 100" << std::endl;
         return IntRect(centerView.x - 100, centerView.y + 50, 100,100);
     }
 }

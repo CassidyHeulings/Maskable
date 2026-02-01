@@ -65,17 +65,20 @@ int main() {
 
     // create inventory
     Inventory inventory = Inventory();
+    bool maskSelected = false;
 
     // selected
     Sprite selectedSprite;
+    selectedSprite.setTexture(TextureHolder::GetTexture("../Graphics/Selection.png"));
+    selectedSprite.setOrigin(256,256);
 
     //TODO draw mouse
     // player crosshair creation
-    window.setMouseCursorVisible(false); // hide mouse pointer
+    window.setMouseCursorVisible(true); // hide mouse pointer
     Sprite spriteMouse;
     Texture textureMouse = TextureHolder::GetTexture("../Graphics/Mouse.png");
     spriteMouse.setTexture(textureMouse);
-    spriteMouse.setOrigin(25, 25);
+    spriteMouse.setOrigin(10,10);
 
     // game loop
     while (window.isOpen()) {
@@ -89,6 +92,18 @@ int main() {
         // Handle events by polling
         Event event;
         while (window.pollEvent(event)) {
+            if (event.type == Event::MouseButtonReleased) {
+                if (state == State::CRAFTING) {
+                    if (event.mouseButton.button == Mouse::Left) {
+                        // move sprite to outline the item
+                        // cycle through each item and click on specific one
+                        if (inventory.getMaskCoords(1, mainView.getCenter()).contains(mouseWorldPos.x + 72, mouseWorldPos.y + 230)) {
+                            maskSelected = true;
+                        }
+                        else maskSelected = false;
+                    }
+                }
+            }
             if (event.type == Event::KeyPressed) {
                 switch (state) {
                     case State::PAUSED:
@@ -129,19 +144,12 @@ int main() {
                             case Keyboard::Escape:
                                 state = State::PLAYING;
                                 break;
-                            case Mouse::Left:
-                                // move sprite to outline the item
-                                // cycle through each item and click on specific one
-                                if (inventory.getMaskCoords(1, player.getCenter()).contains(mouseWorldPos.x, mouseWorldPos.y)) {
-                                    selectedSprite.setPosition(mainView.getCenter());
-                                }
-                                else selectedSprite.setPosition(-1000, -1000);
                             case Keyboard::Enter:
                                 // cycle through each mask
                                 // check have the items available
                                 // craft and add to inventory
                                 if (inventory.getMaskSelected(1)) {
-                                    if (inventory.getItemCount(50)) { // wood mask recipe
+                                    if (inventory.getItemCount(10)) { // wood mask recipe
                                         inventory.makeMask(1);
                                     }
                                 }
@@ -248,6 +256,11 @@ int main() {
             inventory.setInvPosition(mainView.getCenter());
             spriteMouse.setPosition(mouseWorldPos);
             inventory.setMaskPosition(Vector2f(mainView.getCenter().x - 105, mainView.getCenter().y - 112));
+
+            if (maskSelected) {
+                selectedSprite.setPosition(mainView.getCenter());
+            }
+            else selectedSprite.setPosition(-1000, -1000);
         }
 
         /*

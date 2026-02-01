@@ -11,9 +11,9 @@ Interactable::Interactable(int type, FloatRect biomeCoords) : intType{type} {
     timeSinceCollect = 3;
     timeToCollect = 2;
     srand((int)time(0) / type);
-    int x = rand() % static_cast<int>(biomeCoords.width) + static_cast<int>(biomeCoords.left - 1);
+    int x = rand() % static_cast<int>(biomeCoords.width - 100) + static_cast<int>(biomeCoords.left + 100);
     srand((int)time(0) * type);
-    int y = rand() % static_cast<int>(biomeCoords.height) + static_cast<int>(biomeCoords.top - 1);
+    int y = rand() % static_cast<int>(biomeCoords.height - 100) + static_cast<int>(biomeCoords.top + 100);
     // set texture, type, position of interactable
     if (type == 1) {
         sprite = Sprite(TextureHolder::GetTexture("../Graphics/PlayerFront.png"));
@@ -36,8 +36,7 @@ int Interactable::interact() {
     if (timeSinceCollect >= timeToCollect) {
         timeSinceCollect = 0;
         // collect random number of items to inventory
-        srand((int)time(0) / timeSinceCollect);
-        return rand() % 10 + 5;
+        return 2;
     }
     else return 0;
 }
