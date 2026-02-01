@@ -7,23 +7,28 @@
 using namespace sf;
 using namespace std;
 
-Interactable::Interactable(int type, FloatRect biomeCoords) : intType{type} {
+Interactable::Interactable(int type, FloatRect biomeCoords, int num) : intType{type} {
     timeSinceCollect = 3;
     timeToCollect = 2;
-    srand((int)time(0) / type);
-    int x = rand() % static_cast<int>(biomeCoords.width - 100) + static_cast<int>(biomeCoords.left + 100);
-    srand((int)time(0) * type);
-    int y = rand() % static_cast<int>(biomeCoords.height - 100) + static_cast<int>(biomeCoords.top + 100);
+    int x, y;
+    if (num == 1) {
+        x = (biomeCoords.left + biomeCoords.width) / 3;
+        y = (biomeCoords.top + biomeCoords.height) / 3 * 2;
+    }
+    else {
+        x = (biomeCoords.left + biomeCoords.width) / 3 * 2;
+        y = (biomeCoords.top + biomeCoords.height) / 3;
+    }
     // set texture, type, position of interactable
     if (type == 1) {
-        sprite = Sprite(TextureHolder::GetTexture("../Graphics/PlayerFront.png"));
+        sprite = Sprite(TextureHolder::GetTexture("../Graphics/Tree.png"));
         intType = 1;
     }
     else if (type == 2) {
         sprite = Sprite(TextureHolder::GetTexture("../Graphics/PlayerBack.png"));
         intType = 2;
     }
-    sprite.setOrigin(35, 74);
+    sprite.setOrigin(128, 128);
     sprite.setPosition(x, y);
 }
 

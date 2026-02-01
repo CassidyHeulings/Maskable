@@ -83,7 +83,11 @@ int main() {
     dimOverlay.setFillColor(Color(0, 0, 0, 150));
 
     // create interactable
-    Interactable tree(1, getBiomeRect(1));
+    std::vector<Interactable> interactableList;
+    Interactable tree1(1, getBiomeRect(1), 1);
+    interactableList.push_back(tree1);
+    Interactable tree2(1, getBiomeRect(1), 2);
+    interactableList.push_back(tree2);
     bool interacting = false;
 
     // create inventory
@@ -219,8 +223,11 @@ int main() {
 
             // update player
             player.update(dtAsSeconds);
-            // update tree
-            tree.update(dtAsSeconds);
+            // update interactable
+            for (auto& interactableItem : interactableList)
+            {
+                interactableItem.update(dtAsSeconds);
+            }
 
             // set camera view
             // horizontal
@@ -242,9 +249,12 @@ int main() {
             mainView.setCenter(viewPosition);
 
             // interactable collecting
-            if (interacting && player.getPosition().intersects(tree.getSprite().getGlobalBounds())) {
-                inventory.collect(1, tree.interact());
-                interacting = false;
+            for (auto& interactableItem : interactableList)
+            {
+                if (interacting && player.getPosition().intersects(interactableItem.getSprite().getGlobalBounds())) {
+                    inventory.collect(interactableItem.getType(), interactableItem.interact());
+                    interacting = false;
+                }
             }
 
             // TODO change interactable width and height
@@ -315,7 +325,10 @@ int main() {
                 // draw everything related to mainView window
                 window.setView(mainView);
                 window.draw(background, &backgroundTexture); // draw background
-                window.draw(tree.getSprite());
+                for (auto& interactableItem : interactableList)
+                {
+                    window.draw(interactableItem.getSprite());
+                }
                 window.draw(player.getSprite()); // draw player
                 window.draw(player.getWoodMaskSprite());
                 window.draw(player.getWoodMaskSprite());
@@ -330,7 +343,10 @@ int main() {
                 // draw everything related to mainView window
                 window.setView(mainView);
                 window.draw(background, &backgroundTexture); // draw background
-                window.draw(tree.getSprite());
+                for (auto& interactableItem : interactableList)
+                {
+                    window.draw(interactableItem.getSprite());
+                }
                 window.draw(player.getSprite()); // draw player
                 window.draw(player.getWoodMaskSprite());
                 window.draw(dimOverlay);
@@ -340,7 +356,10 @@ int main() {
                 window.clear();
                 window.setView(mainView);
                 window.draw(background, &backgroundTexture); // draw background
-                window.draw(tree.getSprite());
+                for (auto& interactableItem : interactableList)
+                {
+                    window.draw(interactableItem.getSprite());
+                }
                 window.draw(player.getSprite()); // draw player
                 window.draw(player.getWoodMaskSprite());
                 window.draw(dimOverlay);

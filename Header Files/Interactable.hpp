@@ -7,7 +7,7 @@
 
 class Interactable {
 public:
-    Interactable(int type, sf::FloatRect biomeCoords); // prepare interactable
+    Interactable(int type, sf::FloatRect biomeCoords, int num); // prepare interactable
     sf::Vector2f getPosition();
     int interact();
     int getType();
