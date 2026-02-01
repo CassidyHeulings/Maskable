@@ -12,7 +12,6 @@ using namespace sf;
 // constructor
 Player::Player()
     : speed(START_SPEED) {
-    // TODO keep adding
     // add all file names into texture list
     textureList.emplace_back("../Graphics/PlayerFront.png");
     textureList.emplace_back("../Graphics/PlayerBack.png");
@@ -177,7 +176,6 @@ void Player::update(float dt) {
         }
     }
 
-    // TODO adjust with more textures
     // if player is stopped, fix texture
     if (!(leftPressed && rightPressed && upPressed && downPressed)) {
         // facing left

@@ -36,14 +36,16 @@ Vector2f Interactable::getPosition() {
     return position;
 }
 
-int Interactable::interact() {
+int Interactable::interact(bool wearingMask) {
     // if player can collect
     if (timeSinceCollect >= timeToCollect) {
         timeSinceCollect = 0;
-        // collect random number of items to inventory
+        if (wearingMask) {
+            return 3;
+        }
         return 2;
     }
-    else return 0;
+    return 0;
 }
 
 int Interactable::getType() {

@@ -9,7 +9,7 @@ class Interactable {
 public:
     Interactable(int type, sf::FloatRect biomeCoords, int num); // prepare interactable
     sf::Vector2f getPosition();
-    int interact();
+    int interact(bool wearingMask);
     int getType();
     sf::Sprite getSprite();
     void update(float dt);

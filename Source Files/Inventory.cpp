@@ -78,11 +78,11 @@ Sprite Inventory::getSprite() {
     return inventorySprite;
 }
 
-sf::Sprite Inventory::getMaskSprite() {
+Sprite Inventory::getMaskSprite() {
     return maskSprite;
 }
 
-sf::Sprite Inventory::getSelectionSprite() {
+Sprite Inventory::getSelectionSprite() {
     return selectionSprite;
 }
 

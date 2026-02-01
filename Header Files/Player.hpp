@@ -36,7 +36,6 @@ public:
     void intNoneRight();
     // player update - called once per frame
     void update(float dt);
-    // TODO mask effects
 private:
     const float START_SPEED = 300;
     sf::Vector2f position; // players current position

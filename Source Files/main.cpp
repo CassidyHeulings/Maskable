@@ -279,7 +279,7 @@ int main() {
             for (auto& interactableItem : interactableList)
             {
                 if (interacting && player.getPosition().intersects(interactableItem.getSprite().getGlobalBounds())) {
-                    inventory.collect(interactableItem.getType(), interactableItem.interact());
+                    inventory.collect(interactableItem.getType(), interactableItem.interact(wearWoodMask));
                     interacting = false;
                 }
             }
