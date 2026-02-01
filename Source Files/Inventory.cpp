@@ -14,8 +14,8 @@ Inventory::Inventory() {
     woodMaskCrafted = 0;
     inventorySprite.setTexture(TextureHolder::GetTexture("../Graphics/Inventory.png"));
     inventorySprite.setOrigin(256, 256);
-    maskSprite.setTexture(TextureHolder::GetTexture("../Graphics/WoodMask.png"));
-    maskSprite.setOrigin(70, 75);
+    woodMaskSprite.setTexture(TextureHolder::GetTexture("../Graphics/WoodMask.png"));
+    woodMaskSprite.setOrigin(70, 75);
     selectionSprite.setTexture(TextureHolder::GetTexture("../Graphics/Selection.png"));
     selectionSprite.setOrigin(256, 256);
 }
@@ -79,7 +79,7 @@ Sprite Inventory::getSprite() {
 }
 
 Sprite Inventory::getMaskSprite() {
-    return maskSprite;
+    return woodMaskSprite;
 }
 
 Sprite Inventory::getSelectionSprite() {
@@ -95,7 +95,7 @@ void Inventory::setSelectionPosition(Vector2f position) {
 }
 
 void Inventory::setMaskPosition(Vector2f position) {
-    maskSprite.setPosition(position);
+    woodMaskSprite.setPosition(position);
 }
 
 std::string Inventory::getMaskText(int type) {

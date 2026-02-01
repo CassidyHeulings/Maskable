@@ -31,7 +31,7 @@ private:
     bool woodMaskSelected;
     int woodMaskCrafted;
     int maxHold; // max number for items
-    sf::Sprite maskSprite;
+    sf::Sprite woodMaskSprite;
     sf::Sprite selectionSprite;
     std::string woodMaskText = "A wooden mask\nIncreases resource\ncollection by 1\n\nCost: 10 wood";
 };

@@ -25,15 +25,6 @@ public:
     void stopRight();
     void stopUp();
     void stopDown();
-    // prevent player from hitting interactable
-    void intUp();
-    void intDown();
-    void intLeft();
-    void intRight();
-    void intNoneUp();
-    void intNoneDown();
-    void intNoneLeft();
-    void intNoneRight();
     // player update - called once per frame
     void update(float dt);
 private:

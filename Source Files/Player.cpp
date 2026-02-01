@@ -108,38 +108,6 @@ void Player::stopDown() {
     downPressed = false;
 }
 
-void Player::intUp() {
-    interUp = true;
-}
-
-void Player::intDown() {
-    interDown = true;
-}
-
-void Player::intLeft() {
-    interLeft = true;
-}
-
-void Player::intRight() {
-    interRight = true;
-}
-
-void Player::intNoneUp() {
-    interUp = false;
-}
-
-void Player::intNoneDown() {
-    interDown = false;
-}
-
-void Player::intNoneLeft() {
-    interLeft = false;
-}
-
-void Player::intNoneRight() {
-    interRight = false;
-}
-
 // update player every frame
 void Player::update(float dt) {
     // update current position

@@ -25,7 +25,7 @@ int main() {
     // add instance of texture holder
     TextureHolder holder;
     // TODO decide game states
-    enum class State { PAUSED, CRAFTING, NEW_GAME, PLAYING, JOURNAL };
+    enum class State { PAUSED, CRAFTING, NEW_GAME, PLAYING };
     State state = State::NEW_GAME; // start game in paused state
 
     // create SFML window with screen resolution
@@ -219,12 +219,6 @@ int main() {
                                 break;
                         }
                         break;
-                    case State::JOURNAL:
-                        if (event.key.code == Keyboard::Escape) {
-                            state = State::PLAYING;
-                            clock.restart();
-                        }
-                        break;
                 }
             }
 
@@ -356,8 +350,6 @@ int main() {
                 // hud view
                 window.setView(hudView);
                 window.draw(woodText);
-                break;
-            case State::JOURNAL:
                 break;
             case State::PAUSED:
                 window.clear();
