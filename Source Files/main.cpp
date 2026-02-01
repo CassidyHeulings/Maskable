@@ -56,10 +56,22 @@ int main() {
     // paused
     Text pausedText;
     pausedText.setFont(font);
-    pausedText.setCharacterSize(100);
+    pausedText.setCharacterSize(80);
     pausedText.setFillColor(Color::White);
-    pausedText.setPosition(200, 200);
-    pausedText.setString("Press esc \nto continue");
+    pausedText.setPosition(130, 200);
+    pausedText.setString("Press < esc > to continue\n\nPress < backspace > to quit");
+    Text newGameText;
+    newGameText.setFont(font);
+    newGameText.setCharacterSize(65);
+    newGameText.setFillColor(Color::White);
+    newGameText.setPosition(80, 80);
+    newGameText.setString("How to play Maskable:\n\n   1. Collect resources from the land\n\n      using < enter >\n\n   2. Craft masks using < e >\n\nPress < enter > to start!");
+    // wood count crafting
+    Text woodCraftingText;
+    woodCraftingText.setFont(font);
+    woodCraftingText.setCharacterSize(55);
+    woodCraftingText.setFillColor(Color::White);
+    woodCraftingText.setPosition(100, 250);
     // wood count
     Text woodText;
     woodText.setFont(font);
@@ -136,9 +148,6 @@ int main() {
                         case Keyboard::Escape:
                                 state = State::PLAYING;
                                 clock.restart();
-                                break;
-                        case Keyboard::Enter:
-                                state = State::NEW_GAME;
                                 break;
                         case Keyboard::BackSpace:
                                 window.close();
@@ -224,6 +233,9 @@ int main() {
                 std::stringstream ssWood;
                 ssWood << "Wood: " << inventory.getItemCount(1) << "/300";
                 woodText.setString(ssWood.str());
+                std::stringstream ssWoodCraft;
+                ssWoodCraft << "Wood: " << inventory.getItemCount(1);
+                woodCraftingText.setString(ssWoodCraft.str());
                 framesSinceLastHUDUpdate = 0;
             }
 
@@ -357,6 +369,7 @@ int main() {
                 window.draw(player.getSprite()); // draw player
                 window.draw(player.getWoodMaskSprite());
                 window.draw(dimOverlay);
+                window.setView(hudView);
                 window.draw(pausedText);
                 break;
             case State::CRAFTING:
@@ -373,11 +386,16 @@ int main() {
                 window.draw(inventory.getSprite());
                 window.draw(inventory.getMaskSprite());
                 window.draw(selectedSprite);
+                window.setView(hudView);
+                window.draw(woodCraftingText);
+                window.setView(mainView);
                 window.draw(spriteMouse);
                 break;
             case State::NEW_GAME:
                 window.clear();
                 window.draw(dimOverlay);
+                window.setView(hudView);
+                window.draw(newGameText);
                 break;
             default: break;
         }
