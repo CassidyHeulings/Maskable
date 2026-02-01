@@ -20,8 +20,6 @@ using namespace sf;
  * Water -> 5
 */
 
-//TODO sprite.setPosition for inventory items
-
 int main() {
     // initializing screen/world vars
     // add instance of texture holder
@@ -78,6 +76,12 @@ int main() {
     woodText.setCharacterSize(55);
     woodText.setFillColor(Color::White);
     woodText.setPosition(20, 0);
+    // mask text
+    Text maskText;
+    maskText.setFont(font);
+    maskText.setFillColor(Color::White);
+    maskText.setCharacterSize(35);
+    maskText.setPosition(910, 300);
     // time since HUD was updated
     int framesSinceLastHUDUpdate = 0;
     // how often the HUD is updated
@@ -236,6 +240,11 @@ int main() {
                 std::stringstream ssWoodCraft;
                 ssWoodCraft << "Wood: " << inventory.getItemCount(1);
                 woodCraftingText.setString(ssWoodCraft.str());
+                // TODO check for if mask is selected
+                std::stringstream ssMask;
+                if (inventory.getMaskSelected(1)) ssMask << inventory.getMaskText(1);
+                else ssMask << "";
+                maskText.setString(ssMask.str());
                 framesSinceLastHUDUpdate = 0;
             }
 
@@ -329,6 +338,12 @@ int main() {
                 player.toggleWoodMask(true);
             }
             else player.toggleWoodMask(false);
+
+            // update HUD
+            std::stringstream ssMask;
+            if (inventory.getMaskSelected(1)) ssMask << inventory.getMaskText(1);
+            else ssMask << "";
+            maskText.setString(ssMask.str());
         }
 
         /*
@@ -388,6 +403,7 @@ int main() {
                 window.draw(selectedSprite);
                 window.setView(hudView);
                 window.draw(woodCraftingText);
+                window.draw(maskText);
                 window.setView(mainView);
                 window.draw(spriteMouse);
                 break;

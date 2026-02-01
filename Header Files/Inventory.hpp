@@ -22,6 +22,7 @@ public:
     void setInvPosition(sf::Vector2f position);
     void setSelectionPosition(sf::Vector2f position);
     void setMaskPosition(sf::Vector2f position);
+    std::string getMaskText(int type);
 private:
     // number of items
     sf::Sprite inventorySprite;
@@ -31,4 +32,5 @@ private:
     int maxHold; // max number for items
     sf::Sprite maskSprite;
     sf::Sprite selectionSprite;
+    std::string woodMaskText = "A wooden mask\nIncreases resource\ncollection by 1\n\nCost: 10 wood";
 };

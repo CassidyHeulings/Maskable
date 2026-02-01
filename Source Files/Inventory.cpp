@@ -98,3 +98,9 @@ void Inventory::setMaskPosition(Vector2f position) {
     maskSprite.setPosition(position);
 }
 
+std::string Inventory::getMaskText(int type) {
+    if (type == 1) {
+        return woodMaskText;
+    }
+}
+
