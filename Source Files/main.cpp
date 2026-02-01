@@ -334,8 +334,9 @@ int main() {
 
             // make the mask
             if (maskCrafted) {
-                inventory.makeMask(1);
                 inventory.setItemCount(1, 10);
+                inventory.makeMask(1);
+                maskCrafted = false;
             }
             // check if mask is made to wear
             if (wearWoodMask && inventory.isMaskCrafted(1)) {
