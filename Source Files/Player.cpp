@@ -90,8 +90,9 @@ void Player::toggleMask(bool on, int type) {
     if (type == 6) triMaskOn = on;
 }
 
-void Player::setSpeed(bool maskOn) {
-    if (maskOn) speed = START_SPEED * 1.2;
+void Player::setSpeed() {
+    if (shroomMaskOn) speed = START_SPEED * 1.2;
+    else if (triMaskOn) speed = START_SPEED * 1.35;
     else speed = START_SPEED;
 }
 

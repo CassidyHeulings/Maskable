@@ -14,7 +14,7 @@ public:
     sf::Sprite getSprite(); // send copy of sprite to main function
     sf::Sprite getMaskSprite(int type);
     void toggleMask(bool on, int type);
-    void setSpeed(bool maskOn);
+    void setSpeed();
     // player movement
     void moveLeft();
     void moveRight();

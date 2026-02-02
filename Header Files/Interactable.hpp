@@ -9,8 +9,8 @@ class Interactable {
 public:
     Interactable(int type, sf::FloatRect biomeCoords, int num); // prepare interactable
     sf::Vector2f getPosition();
-    void increaseCollectSpeed(bool wearingMask);
-    int interact(bool wearingMask);
+    void increaseCollectSpeed(float factor);
+    int interact(int amount);
     int getType();
     sf::Sprite getSprite();
     void update(float dt);

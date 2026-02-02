@@ -72,9 +72,9 @@ int main() {
     // resource count
     Text resourceText;
     resourceText.setFont(font);
-    resourceText.setCharacterSize(55);
+    resourceText.setCharacterSize(45);
     resourceText.setFillColor(Color::White);
-    resourceText.setPosition(20, 0);
+    resourceText.setPosition(30, 0);
     // mask text
     Text maskText;
     maskText.setFont(font);
@@ -224,6 +224,10 @@ int main() {
                                 break;
                             case Keyboard::E:
                                 state = State::CRAFTING;
+                                inventory.setMaskSelected(false, 1);
+                                inventory.setMaskSelected(false, 3);
+                                inventory.setMaskSelected(false, 4);
+                                inventory.setMaskSelected(false, 6);
                                 break;
                             }
                             break;
@@ -278,7 +282,10 @@ int main() {
                                 else wearGemMask = false;
                                 // tri mask
                                 if (inventory.getMaskSelected(6) && !wearTriMask && inventory.isMaskCrafted(6)) wearTriMask = true;
-                                else if (inventory.getMaskSelected(6) && wearTriMask) wearTriMask = false;
+                                else if (inventory.getMaskSelected(6) && wearTriMask) {
+                                    wearTriMask = false;
+                                    std::cout << "mask off";
+                                }
                                 else wearTriMask = false;
                                 break;
                         }
@@ -318,6 +325,7 @@ int main() {
             }
 
             // update player
+            player.setSpeed();
             player.update(dtAsSeconds);
             // update interactable
             for (auto& interactableItem : interactableList)
@@ -348,8 +356,15 @@ int main() {
             for (auto& interactableItem : interactableList)
             {
                 if (interacting && player.getPosition().intersects(interactableItem.getSprite().getGlobalBounds())) {
-                    interactableItem.increaseCollectSpeed(wearGemMask);
-                    inventory.collect(interactableItem.getType(), interactableItem.interact(wearWoodMask));
+                    // adjust collect speed
+                    if (wearGemMask) interactableItem.increaseCollectSpeed(.3);
+                    else if (wearTriMask) interactableItem.increaseCollectSpeed(.5);
+                    else interactableItem.increaseCollectSpeed(1);
+
+                    // collect item
+                    if (wearWoodMask) inventory.collect(interactableItem.getType(), interactableItem.interact(3));
+                    else if (wearTriMask) inventory.collect(interactableItem.getType(), interactableItem.interact(5));
+                    else inventory.collect(interactableItem.getType(), interactableItem.interact(2));
                     interacting = false;
                 }
             }
@@ -413,16 +428,14 @@ int main() {
             else player.toggleMask(false, 1);
             if (wearShroomMask && inventory.isMaskCrafted(3)) {
                 player.toggleMask(true, 3);
-                player.setSpeed(true);
             }
             else {
                 player.toggleMask(false, 3);
-                player.setSpeed(false);
             }
             if (wearGemMask && inventory.isMaskCrafted(4)) {
                 player.toggleMask(true, 4);
             }
-            else player.toggleMask(false, 6);
+            else player.toggleMask(false, 4);
             if (wearTriMask && inventory.isMaskCrafted(6)) {
                 player.toggleMask(true, 6);
             }

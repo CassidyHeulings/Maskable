@@ -46,6 +46,6 @@ private:
     sf::Sprite selectionSprite;
     std::string woodMaskText = "A wooden mask\n\nIncreases resource\n collection by 1\n\nCost: 10 wood";
     std::string shroomMaskText = "A mushroom mask\n\nIncreases player\n speed by 20%\n\nCost: 10 mushrooms";
-    std::string gemMaskText = "A gem mask\n\nIncreases resource\n collection speed\n by 50%\n\nCost: 15 gems";
-    std::string triMaskText = "The Trifold Mask\n\nIncreases resource\n collection by 3\nIncreases player\n speed by 30%\nIncreases resource\n collection speed\n by 75%\n\nCost: 30 wood\n      30 mushrooms\n      30 gems";
+    std::string gemMaskText = "A gem mask\n\nIncreases resource\n collection speed\n by 30%\n\nCost: 15 gems";
+    std::string triMaskText = "The Trifold Mask\n\nIncreases resource\n collection by 4\nIncreases player\n speed by 35%\nIncreases resource\n collection speed\n by 50%\n\nCost: 30 wood\n      30 mushrooms\n      30 gems";
 };

@@ -44,19 +44,15 @@ Vector2f Interactable::getPosition() {
     return position;
 }
 
-void Interactable::increaseCollectSpeed(bool wearingMask) {
-    if (wearingMask) timeToCollect = BASE_COLLECT_SPEED * .5;
-    else timeToCollect = BASE_COLLECT_SPEED;
+void Interactable::increaseCollectSpeed(float factor) {
+    timeToCollect = BASE_COLLECT_SPEED * factor;
 }
 
-int Interactable::interact(bool wearingMask) {
+int Interactable::interact(int amount) {
     // if player can collect
     if (timeSinceCollect >= timeToCollect) {
         timeSinceCollect = 0;
-        if (wearingMask) {
-            return 3;
-        }
-        return 2;
+        return amount;
     }
     return 0;
 }
