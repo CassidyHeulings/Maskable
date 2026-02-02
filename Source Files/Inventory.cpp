@@ -26,11 +26,11 @@ Inventory::Inventory() {
     inventorySprite.setOrigin(256, 256);
     woodMaskSprite.setTexture(TextureHolder::GetTexture("../Graphics/WoodMask.png"));
     woodMaskSprite.setOrigin(70, 75);
-    shroomMaskSprite.setTexture(TextureHolder::GetTexture("../Graphics/WoodMask.png"));
+    shroomMaskSprite.setTexture(TextureHolder::GetTexture("../Graphics/ShroomMask.png"));
     shroomMaskSprite.setOrigin(70, 75);
-    gemMaskSprite.setTexture(TextureHolder::GetTexture("../Graphics/WoodMask.png"));
+    gemMaskSprite.setTexture(TextureHolder::GetTexture("../Graphics/GemMask.png"));
     gemMaskSprite.setOrigin(70, 75);
-    triMaskSprite.setTexture(TextureHolder::GetTexture("../Graphics/WoodMask.png"));
+    triMaskSprite.setTexture(TextureHolder::GetTexture("../Graphics/TriMask.png"));
     triMaskSprite.setOrigin(70, 75);
     selectionSprite.setTexture(TextureHolder::GetTexture("../Graphics/Selection.png"));
     selectionSprite.setOrigin(256, 256);
@@ -78,12 +78,12 @@ IntRect Inventory::getMaskCoords(int type, Vector2f centerView) {
         return IntRect(centerView.x - 105, centerView.y + 45, 135,135);
     }
     if (type == 3) { // shroom mask
-        return IntRect(centerView.x + 110, centerView.y + 45, 135,135);
+        return IntRect(centerView.x + 110, centerView.y + 45, 135,140);
     }
-    if (type == 4) {
+    if (type == 4) { // gem mask
         return IntRect(centerView.x - 105, centerView.y + 250, 135,150);
     }
-    if (type == 6) {
+    if (type == 6) { // tri mask
         return IntRect(centerView.x + 110, centerView.y + 250, 135,150);
     }
 }
@@ -143,7 +143,7 @@ void Inventory::setSelectionPosition(Vector2f position) {
 
 void Inventory::setMaskPosition(Vector2f position) {
     woodMaskSprite.setPosition(position.x - 105, position.y - 112);
-    shroomMaskSprite.setPosition(position.x + 110, position.y - 112);
+    shroomMaskSprite.setPosition(position.x + 113, position.y - 107);
     gemMaskSprite.setPosition(position.x - 105, position.y + 100);
     triMaskSprite.setPosition(position.x + 112, position.y + 97);
 }

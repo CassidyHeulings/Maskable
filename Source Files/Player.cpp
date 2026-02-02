@@ -24,15 +24,15 @@ Player::Player()
     woodMask.setOrigin(34,75);
     woodMaskOn = false;
 
-    shroomMask = Sprite(TextureHolder::GetTexture("../Graphics/WoodMaskFront.png"));
+    shroomMask = Sprite(TextureHolder::GetTexture("../Graphics/ShroomMaskFront.png"));
     shroomMask.setOrigin(34,75);
     shroomMaskOn = false;
 
-    gemMask = Sprite(TextureHolder::GetTexture("../Graphics/WoodMaskFront.png"));
+    gemMask = Sprite(TextureHolder::GetTexture("../Graphics/GemMaskFront.png"));
     gemMask.setOrigin(34,75);
     gemMaskOn = false;
 
-    triMask = Sprite(TextureHolder::GetTexture("../Graphics/WoodMaskFront.png"));
+    triMask = Sprite(TextureHolder::GetTexture("../Graphics/TriMaskFront.png"));
     triMask.setOrigin(34,75);
     triMaskOn = false;
 

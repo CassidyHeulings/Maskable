@@ -33,7 +33,7 @@ Interactable::Interactable(int type, FloatRect biomeCoords, int num) : intType{t
         intType = 3;
     }
     else if (type == 4) {
-        sprite = Sprite(TextureHolder::GetTexture("../Graphics/Tree.png"));
+        sprite = Sprite(TextureHolder::GetTexture("../Graphics/Gem.png"));
         intType = 4;
     }
     sprite.setOrigin(128, 128);
